@@ -61,7 +61,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-center md:text-left">
               <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Ready to Sell Your Property?</h2>
-              <p className="text-muted-foreground text-lg mb-8">Join Properly to list your property and connect with thousands of potential buyers across Kenya.</p>
+              <p className="text-muted-foreground text-lg mb-8">Join Placeholder to list your property and connect with thousands of potential buyers across Kenya.</p>
               <Button asChild size="lg" className="font-bold">
                   <Link href="/seller-register">
                     Become a Seller <ArrowRight className="ml-2 h-5 w-5" />

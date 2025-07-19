@@ -37,7 +37,7 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <Building2 className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold font-headline tracking-tight">Properly</span>
+          <span className="text-2xl font-bold font-headline tracking-tight">Placeholder</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-base font-medium">
           {navLinks.map((link) => {
@@ -159,7 +159,7 @@ export default function Header() {
               <SheetHeader>
                  <Link href="/" className="flex items-center gap-2 mb-4">
                     <Building2 className="h-6 w-6 text-primary" />
-                    <span className="font-bold text-lg font-headline">Properly</span>
+                    <span className="font-bold text-lg font-headline">Placeholder</span>
                 </Link>
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               </SheetHeader>

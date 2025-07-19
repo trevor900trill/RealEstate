@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         </Avatar>
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <div className="absolute bottom-10 left-10 text-white">
-          <h2 className="text-4xl font-headline font-bold">Welcome to Properly</h2>
+          <h2 className="text-4xl font-headline font-bold">Welcome to Placeholder</h2>
           <p className="text-lg mt-2 max-w-lg">Your journey to finding the perfect home starts here. Connect with sellers and discover unique properties.</p>
         </div>
       </div>

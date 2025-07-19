@@ -35,7 +35,7 @@ export default function LoginPage() {
             <div className="flex justify-center mb-4">
               <Link href="/" className="flex items-center gap-2 text-foreground">
                   <Building2 className="h-8 w-8 text-primary" />
-                  <span className="text-2xl font-bold font-headline tracking-tight">Properly</span>
+                  <span className="text-2xl font-bold font-headline tracking-tight">Placeholder</span>
               </Link>
             </div>
           <CardTitle className="text-3xl font-headline">Welcome Back</CardTitle>
