@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, Home, MessageSquare, PlusCircle, UserPlus, AlertTriangle } from "lucide-react";
 import AnalyticsCard from "@/components/seller/AnalyticsCard";
 import ViewsChart from "@/components/seller/ViewsChart";
-import MessagesTable from "@/components/seller/MessagesTable";
-import { sellerAnalytics, sellerMessages, properties } from "@/lib/dummy-data";
+import { sellerAnalytics, properties } from "@/lib/dummy-data";
 import PropertyCard from "@/components/property/PropertyCard";
 import { useAuth } from "@/hooks/useAuth.tsx";
 import LoginPrompt from "@/components/auth/LoginPrompt";
@@ -80,10 +80,9 @@ export default function SellerDashboardPage() {
         </header>
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 md:w-[400px] h-auto mb-8">
+          <TabsList className="grid w-full grid-cols-2 md:w-[300px] h-auto mb-8">
             <TabsTrigger value="overview" className="py-2">Overview</TabsTrigger>
             <TabsTrigger value="properties" className="py-2">Properties</TabsTrigger>
-            <TabsTrigger value="messages" id="messages" className="py-2">Messages</TabsTrigger>
           </TabsList>
           
           <TabsContent value="overview">
@@ -121,17 +120,6 @@ export default function SellerDashboardPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="messages">
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline">Inbox</CardTitle>
-                <CardDescription>Respond to inquiries from potential buyers.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <MessagesTable messages={sellerMessages} />
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
     </div>

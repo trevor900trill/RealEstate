@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -6,23 +7,24 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { sellerMessages } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Mail, AlertTriangle, Send, Inbox } from "lucide-react";
+import { Mail, AlertTriangle } from "lucide-react";
 import LoginPrompt from "@/components/auth/LoginPrompt";
 import { useAuth } from "@/hooks/useAuth.tsx";
 import { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import MessagesTable from "@/components/seller/MessagesTable";
 
 // For demo purposes, we'll pretend these are the buyer's messages
-const buyerMessages = sellerMessages.slice(0, 3).map(m => ({
+// In a real app, this data would come from a database based on the user's ID
+const buyerMessages = sellerMessages.slice(3, 5).map(m => ({
     ...m,
-    name: m.property.split(' ').slice(-2).join(' ') + ' Agent',
+    name: `Agent for ${m.property.split(' ').slice(0,2).join(' ')}`, // Simulate agent name
     id: `B${m.id}`
 }));
 
 const BuyerInbox = () => (
     <div className="space-y-4">
         {buyerMessages.length > 0 ? buyerMessages.map((message) => (
+            // In a real app, this link would go to a detailed message view like /messages/B-MSG004
             <Link href="#" key={message.id}>
                 <div className={cn(
                     "flex items-start gap-4 p-4 rounded-lg border hover:bg-secondary/50 transition-colors",
@@ -36,7 +38,7 @@ const BuyerInbox = () => (
                         <div className="flex justify-between items-start">
                             <div>
                                 <p className={cn("font-semibold", message.status === 'Unread' && 'text-primary')}>{message.name}</p>
-                                <p className="text-sm font-bold">{message.property}</p>
+                                <p className="text-sm font-bold text-muted-foreground">Inquiry about: {message.property}</p>
                             </div>
                             <p className="text-xs text-muted-foreground">{message.date}</p>
                         </div>
@@ -52,7 +54,7 @@ const BuyerInbox = () => (
                 <p className="text-muted-foreground mt-2">
                     When you contact a seller, your conversation will appear here.
                 </p>
-                </div>
+            </div>
         )}
     </div>
 );
@@ -91,32 +93,15 @@ export default function MessagesPage() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 text-3xl font-headline">
                             <Mail className="w-8 h-8 text-primary" />
-                            Your Inbox
+                            {isSeller ? "Seller Inbox" : "Your Inbox"}
                         </CardTitle>
                          <CardDescription>
-                            {isSeller ? "Manage messages from potential buyers and your own inquiries." : "Conversations with sellers about properties you're interested in."}
+                            {isSeller ? "Manage messages from potential buyers about your listings." : "Conversations with sellers about properties you're interested in."}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
                        {isSeller ? (
-                            <Tabs defaultValue="seller" className="w-full">
-                                <TabsList className="grid w-full grid-cols-2 md:w-[300px] mb-6">
-                                    <TabsTrigger value="seller">
-                                        <Inbox className="mr-2 h-4 w-4"/>
-                                        Seller Inbox
-                                    </TabsTrigger>
-                                    <TabsTrigger value="buyer">
-                                        <Send className="mr-2 h-4 w-4"/>
-                                        Sent Inquiries
-                                    </TabsTrigger>
-                                </TabsList>
-                                <TabsContent value="seller">
-                                    <MessagesTable messages={sellerMessages} />
-                                </TabsContent>
-                                <TabsContent value="buyer">
-                                    <BuyerInbox />
-                                </TabsContent>
-                            </Tabs>
+                           <MessagesTable messages={sellerMessages} />
                        ) : (
                            <BuyerInbox />
                        )}
