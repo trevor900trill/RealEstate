@@ -22,8 +22,8 @@ const fontHeadline = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "ResiConnect - Your Home for Real Estate",
-  description: "Find your next home with ResiConnect. Browse listings, connect with sellers, and discover the perfect property.",
+  title: "Properly - Your Home for Real Estate",
+  description: "Find your next home with Properly. Browse listings, connect with sellers, and discover the perfect property.",
 };
 
 export default function RootLayout({

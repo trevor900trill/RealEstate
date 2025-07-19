@@ -31,7 +31,7 @@ export default function MessageDetailPage({ params }: { params: { id: string } }
           <Card className="shadow-lg">
             <CardHeader className="flex flex-row items-start gap-4">
               <Avatar className="w-12 h-12 border-2 border-primary/50">
-                <AvatarImage src={`https://placehold.co/100x100/f2e8e5/4d4c4a`} alt={message.name} data-ai-hint="person" />
+                <AvatarImage src={message.avatar} alt={message.name} data-ai-hint="person" />
                 <AvatarFallback>{message.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <div>

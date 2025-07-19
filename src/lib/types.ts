@@ -38,4 +38,5 @@ export interface Message {
   date: string;
   status: 'Read' | 'Unread';
   body: string;
+  avatar: string;
 }

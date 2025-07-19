@@ -8,10 +8,10 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="flex items-center gap-2 mb-4 md:mb-0">
             <Building2 className="h-6 w-6 text-primary" />
-            <span className="text-lg font-bold font-headline">ResiConnect</span>
+            <span className="text-lg font-bold font-headline">Properly</span>
           </div>
           <p className="text-sm text-muted-foreground mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} ResiConnect. All rights reserved.
+            &copy; {new Date().getFullYear()} Properly. All rights reserved.
           </p>
           <nav className="flex gap-4 md:gap-6">
             <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">

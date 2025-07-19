@@ -16,7 +16,7 @@ export default function Home() {
         <div className="absolute inset-0">
            <Avatar className="h-full w-full rounded-none">
                 <AvatarImage
-                    src="https://placehold.co/1920x1080/f2e8e5/e07a5f"
+                    src="https://placehold.co/1920x1080/e07a5f/f2e8e5"
                     alt="Background hero image of a modern home"
                     className="object-cover opacity-50"
                     data-ai-hint="modern home abstract background"
@@ -61,7 +61,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-center md:text-left">
               <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Ready to Sell Your Property?</h2>
-              <p className="text-muted-foreground text-lg mb-8">Join ResiConnect to list your property and connect with thousands of potential buyers across Kenya.</p>
+              <p className="text-muted-foreground text-lg mb-8">Join Properly to list your property and connect with thousands of potential buyers across Kenya.</p>
               <Button asChild size="lg" className="font-bold">
                   <Link href="/seller-register">
                     Become a Seller <ArrowRight className="ml-2 h-5 w-5" />
@@ -71,7 +71,7 @@ export default function Home() {
             <div className="flex justify-center">
                <Avatar className="rounded-xl shadow-2xl w-[500px] h-[350px]">
                  <AvatarImage 
-                    src="https://placehold.co/600x400/81b29a/f2e8e5"
+                    src="https://placehold.co/600x400/e07a5f/f2e8e5"
                     alt="A smiling real estate agent"
                     className="object-cover"
                     data-ai-hint="real estate agent"

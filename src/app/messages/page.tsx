@@ -20,6 +20,7 @@ const buyerMessages = sellerMessages.slice(3, 5).map(m => {
     return {
         ...m,
         name: property ? property.agent.name : 'Listing Agent', // Simulate agent name
+        avatar: property ? property.agent.avatar : 'https://placehold.co/100x100/e07a5f/f2e8e5',
         id: `B-${m.id}`
     }
 });
@@ -33,7 +34,7 @@ const BuyerInbox = () => (
                     message.status === 'Unread' && 'bg-primary/5'
                 )}>
                     <Avatar className="w-12 h-12 border-2 border-primary/40">
-                        <AvatarImage src={`https://placehold.co/100x100/3d405b/f2e8e5`} alt={message.name} data-ai-hint="professional portrait" />
+                        <AvatarImage src={message.avatar} alt={message.name} data-ai-hint="professional portrait" />
                         <AvatarFallback>{message.name.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1">
