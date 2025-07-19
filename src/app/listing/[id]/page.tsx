@@ -9,17 +9,39 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone, Text, Heart, MessageSquare } from 'lucide-react';
+import { BedDouble, Bath, Expand, MapPin, Building, Tag, Phone, Text, Heart, MessageSquare } from 'lucide-react';
 import ContactAgentDialog from '@/components/property/ContactAgentDialog';
 import { useState } from 'react';
+import { useAuth } from "@/hooks/useAuth.tsx";
+import LoginPrompt from '@/components/auth/LoginPrompt';
 
 export default function ListingPage({ params }: { params: { id: string } }) {
   const [isContactOpen, setContactOpen] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const { isLoggedIn } = useAuth();
+  
   const property = properties.find((p) => p.id.toString() === params.id);
 
   if (!property) {
     notFound();
   }
+  
+  const handleContactClick = () => {
+    if (isLoggedIn) {
+      setContactOpen(true);
+    } else {
+      setShowLoginPrompt(true);
+    }
+  };
+  
+  const handleFavoriteClick = () => {
+    if (!isLoggedIn) {
+      setShowLoginPrompt(true);
+    } else {
+      // In a real app, you'd toggle the favorite status here
+      alert('Added to favorites!');
+    }
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-KE', {
@@ -75,7 +97,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                      <div className="text-3xl font-bold font-headline text-primary whitespace-nowrap">
                         {formatPrice(property.price)}
                      </div>
-                      <Button variant="ghost" size="icon" className="mt-2 text-muted-foreground hover:text-primary">
+                      <Button variant="ghost" size="icon" className="mt-2 text-muted-foreground hover:text-primary" onClick={handleFavoriteClick}>
                         <Heart className="w-7 h-7" />
                         <span className="sr-only">Favorite</span>
                       </Button>
@@ -135,7 +157,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                 <p className="text-muted-foreground">Listing Agent</p>
               </CardHeader>
               <CardContent>
-                <Button className="w-full text-lg h-12 mb-4" onClick={() => setContactOpen(true)}>
+                <Button className="w-full text-lg h-12 mb-4" onClick={handleContactClick}>
                   <MessageSquare className="mr-2 h-5 w-5" /> Contact Agent
                 </Button>
                 <a href="tel:+254123456789">
@@ -155,6 +177,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
       property={property} 
       agent={property.agent}
     />
+    <LoginPrompt isOpen={showLoginPrompt} onOpenChange={setShowLoginPrompt} />
     </>
   );
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,12 +7,20 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BedDouble, Bath, Expand, MapPin, Heart } from 'lucide-react';
 import type { Property } from '@/lib/types';
+import { useAuth } from "@/hooks/useAuth.tsx";
+import { useState } from 'react';
+import LoginPrompt from '../auth/LoginPrompt';
+import { useToast } from '@/hooks/use-toast';
 
 interface PropertyCardProps {
   property: Property;
 }
 
 export default function PropertyCard({ property }: PropertyCardProps) {
+  const { isLoggedIn } = useAuth();
+  const { toast } = useToast();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-KE', {
       style: 'currency',
@@ -19,8 +29,22 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       maximumFractionDigits: 0,
     }).format(price);
   };
+  
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!isLoggedIn) {
+      setShowLoginPrompt(true);
+    } else {
+      // In a real app, this would update state
+      toast({
+        title: "Added to favorites!",
+        description: `${property.title} has been saved.`,
+      });
+    }
+  };
 
   return (
+    <>
     <Card className="flex flex-col overflow-hidden h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-xl shadow-md">
       <CardHeader className="p-0 relative">
         <Link href={`/listing/${property.id}`}>
@@ -37,7 +61,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         <Badge variant="secondary" className="absolute top-3 right-3 text-sm rounded-md">
           {property.status}
         </Badge>
-         <Button variant="ghost" size="icon" className="absolute top-2 left-2 bg-background/70 hover:bg-background text-muted-foreground hover:text-primary rounded-full">
+         <Button variant="ghost" size="icon" className="absolute top-2 left-2 bg-background/70 hover:bg-background text-muted-foreground hover:text-primary rounded-full" onClick={handleFavoriteClick}>
             <Heart className="w-5 h-5" />
             <span className="sr-only">Favorite</span>
         </Button>
@@ -71,5 +95,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
         </Button>
       </CardFooter>
     </Card>
+    <LoginPrompt isOpen={showLoginPrompt} onOpenChange={setShowLoginPrompt} />
+    </>
   );
 }
