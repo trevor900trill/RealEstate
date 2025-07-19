@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Property } from '@/lib/types';
 import PropertyCard from '@/components/property/PropertyCard';
 import { Button } from '@/components/ui/button';
@@ -9,12 +10,20 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { Search, Map as MapIcon, List, X } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Search, Map as MapIcon, List, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const MapView = ({ properties }: { properties: Property[] }) => {
+const ITEMS_PER_PAGE = 8;
+
+const MapView = ({ properties, onMarkerClick }: { properties: Property[], onMarkerClick: (id: number) => void }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
 
+  const clearMarkers = useCallback(() => {
+    markers.forEach(marker => marker.setMap(null));
+    setMarkers([]);
+  }, [markers]);
+  
   useEffect(() => {
     const initMap = () => {
       if (window.google && !map) {
@@ -26,170 +35,92 @@ const MapView = ({ properties }: { properties: Property[] }) => {
             {
               "featureType": "all",
               "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "weight": "2.00"
-                }
-              ]
+              "stylers": [{ "weight": "2.00" }]
             },
             {
               "featureType": "all",
               "elementType": "geometry.stroke",
-              "stylers": [
-                {
-                  "color": "#9c9c9c"
-                }
-              ]
+              "stylers": [{ "color": "#9c9c9c" }]
             },
             {
               "featureType": "all",
               "elementType": "labels.text",
-              "stylers": [
-                {
-                  "visibility": "on"
-                }
-              ]
+              "stylers": [{ "visibility": "on" }]
             },
             {
               "featureType": "landscape",
               "elementType": "all",
-              "stylers": [
-                {
-                  "color": "#f2f2f2"
-                }
-              ]
+              "stylers": [{ "color": "#f2f2f2" }]
             },
             {
               "featureType": "landscape",
               "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#ffffff"
-                }
-              ]
+              "stylers": [{ "color": "#ffffff" }]
             },
             {
               "featureType": "landscape.man_made",
               "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#ffffff"
-                }
-              ]
+              "stylers": [{ "color": "#ffffff" }]
             },
             {
               "featureType": "poi",
               "elementType": "all",
-              "stylers": [
-                {
-                  "visibility": "off"
-                }
-              ]
+              "stylers": [{ "visibility": "off" }]
             },
             {
               "featureType": "road",
               "elementType": "all",
-              "stylers": [
-                {
-                  "saturation": -100
-                },
-                {
-                  "lightness": 45
-                }
-              ]
+              "stylers": [{ "saturation": -100 }, { "lightness": 45 }]
             },
             {
               "featureType": "road",
               "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#eeeeee"
-                }
-              ]
+              "stylers": [{ "color": "#eeeeee" }]
             },
             {
               "featureType": "road",
               "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#7b7b7b"
-                }
-              ]
+              "stylers": [{ "color": "#7b7b7b" }]
             },
             {
               "featureType": "road",
               "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#ffffff"
-                }
-              ]
+              "stylers": [{ "color": "#ffffff" }]
             },
             {
               "featureType": "road.highway",
               "elementType": "all",
-              "stylers": [
-                {
-                  "visibility": "simplified"
-                }
-              ]
+              "stylers": [{ "visibility": "simplified" }]
             },
             {
               "featureType": "road.arterial",
               "elementType": "labels.icon",
-              "stylers": [
-                {
-                  "visibility": "off"
-                }
-              ]
+              "stylers": [{ "visibility": "off" }]
             },
             {
               "featureType": "transit",
               "elementType": "all",
-              "stylers": [
-                {
-                  "visibility": "off"
-                }
-              ]
+              "stylers": [{ "visibility": "off" }]
             },
             {
               "featureType": "water",
               "elementType": "all",
-              "stylers": [
-                {
-                  "color": "#46bcec"
-                },
-                {
-                  "visibility": "on"
-                }
-              ]
+              "stylers": [{ "color": "#46bcec" }, { "visibility": "on" }]
             },
             {
               "featureType": "water",
               "elementType": "geometry.fill",
-              "stylers": [
-                {
-                  "color": "#c8d7d4"
-                }
-              ]
+              "stylers": [{ "color": "#c8d7d4" }]
             },
             {
               "featureType": "water",
               "elementType": "labels.text.fill",
-              "stylers": [
-                {
-                  "color": "#070707"
-                }
-              ]
+              "stylers": [{ "color": "#070707" }]
             },
             {
               "featureType": "water",
               "elementType": "labels.text.stroke",
-              "stylers": [
-                {
-                  "color": "#ffffff"
-                }
-              ]
+              "stylers": [{ "color": "#ffffff" }]
             }
           ]
         });
@@ -201,15 +132,25 @@ const MapView = ({ properties }: { properties: Property[] }) => {
 
   useEffect(() => {
     if (map) {
+      clearMarkers();
+      const newMarkers: google.maps.Marker[] = [];
       properties.forEach(property => {
-        new window.google.maps.Marker({
+        const marker = new window.google.maps.Marker({
           position: property.location,
           map: map,
           title: property.title,
+          icon: {
+            url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="hsl(15 82% 67%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-home"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'),
+            scaledSize: new window.google.maps.Size(32, 32),
+          }
         });
+        marker.addListener('click', () => onMarkerClick(property.id));
+        newMarkers.push(marker);
       });
+      setMarkers(newMarkers);
     }
-  }, [map, properties]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, properties, onMarkerClick]);
 
   return (
     <Card className='rounded-xl shadow-lg'>
@@ -220,12 +161,13 @@ const MapView = ({ properties }: { properties: Property[] }) => {
   );
 };
 
-
 export default function ListingExplorer({ properties }: { properties: Property[] }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [propertyType, setPropertyType] = useState('all');
   const [bedrooms, setBedrooms] = useState(0);
   const [priceRange, setPriceRange] = useState([0, 500000000]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
 
   const filteredProperties = useMemo(() => {
     return properties.filter(property => {
@@ -238,17 +180,39 @@ export default function ListingExplorer({ properties }: { properties: Property[]
       return matchesSearch && matchesType && matchesBedrooms && matchesPrice;
     });
   }, [searchQuery, propertyType, bedrooms, priceRange, properties]);
+  
+  const paginatedProperties = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredProperties.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredProperties, currentPage]);
+
+  const totalPages = Math.ceil(filteredProperties.length / ITEMS_PER_PAGE);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   const resetFilters = () => {
     setSearchQuery('');
     setPropertyType('all');
     setBedrooms(0);
     setPriceRange([0, 500000000]);
+    setCurrentPage(1);
   };
+  
+  const handleMarkerClick = (id: number) => {
+    router.push(`/listing/${id}`);
+  };
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, propertyType, bedrooms, priceRange]);
   
   return (
     <div>
-        <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">Explore Properties</h2>
+      <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">Explore Properties</h2>
       <Card className="mb-8 p-6 shadow-lg bg-background rounded-xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <div className="lg:col-span-2">
@@ -257,7 +221,7 @@ export default function ListingExplorer({ properties }: { properties: Property[]
               <Input
                 id="search"
                 type="text"
-                placeholder="e.g., 'Ocean View' or 'Malibu, CA'"
+                placeholder="e.g., 'Karen' or 'Ocean View'"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="h-11 pl-10"
@@ -274,9 +238,9 @@ export default function ListingExplorer({ properties }: { properties: Property[]
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="house">House</SelectItem>
-                <SelectItem value="apartment">Apartment</SelectItem>
-                <SelectItem value="condo">Condo</SelectItem>
+                <SelectItem value="House">House</SelectItem>
+                <SelectItem value="Apartment">Apartment</SelectItem>
+                <SelectItem value="Condo">Condo</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -337,12 +301,27 @@ export default function ListingExplorer({ properties }: { properties: Property[]
             </TabsList>
         </div>
         <TabsContent value="grid">
-             {filteredProperties.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                    {filteredProperties.map((property) => (
-                    <PropertyCard key={property.id} property={property} />
-                    ))}
-                </div>
+             {paginatedProperties.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                      {paginatedProperties.map((property) => (
+                      <PropertyCard key={property.id} property={property} />
+                      ))}
+                  </div>
+                   {totalPages > 1 && (
+                    <div className="flex justify-center items-center gap-4 mt-12">
+                      <Button variant="outline" size="icon" onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <span className="text-sm font-medium">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      <Button variant="outline" size="icon" onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
+                </>
             ) : (
                 <div className="text-center py-16">
                     <p className="text-xl font-semibold">No properties found</p>
@@ -351,7 +330,7 @@ export default function ListingExplorer({ properties }: { properties: Property[]
             )}
         </TabsContent>
         <TabsContent value="map">
-            <MapView properties={filteredProperties} />
+            <MapView properties={filteredProperties} onMarkerClick={handleMarkerClick} />
         </TabsContent>
       </Tabs>
     </div>

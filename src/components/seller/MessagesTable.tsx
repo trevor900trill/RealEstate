@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,9 @@ export default function MessagesTable({ messages }: MessagesTableProps) {
                 </Badge>
               </TableCell>
               <TableCell className="text-right">
-                <Button variant="outline" size="sm">View</Button>
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/seller-dashboard/messages/${message.id}`}>View</Link>
+                </Button>
               </TableCell>
             </TableRow>
           ))}

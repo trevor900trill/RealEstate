@@ -3,16 +3,20 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Building2 } from "lucide-react";
+import { Menu, Building2, UserCircle, Heart, LogOut, LayoutDashboard } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/#listings", label: "Listings" },
   { href: "/seller-dashboard", label: "For Sellers" },
 ];
+
+// Faking authentication state
+const IS_LOGGED_IN = true;
 
 export default function Header() {
   const pathname = usePathname();
@@ -41,26 +45,63 @@ export default function Header() {
           ))}
         </nav>
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost" asChild>
-            <Link href="/login">Sign In</Link>
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                Register
+          {IS_LOGGED_IN ? (
+             <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src="https://placehold.co/100x100/e07a5f/f2e8e5" alt="User" data-ai-hint="person" />
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">John Doe</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      john.doe@example.com
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/seller-dashboard"><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/favorites"><Heart className="mr-2 h-4 w-4" />Favorites</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                   <LogOut className="mr-2 h-4 w-4" />
+                   Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link href="/login">Sign In</Link>
               </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>I am a...</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/register">Buyer</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/seller-register">Seller</Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button>
+                    Register
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>I am a...</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/register">Buyer</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/seller-register">Seller</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
         </div>
         <div className="md:hidden">
           <Sheet>
@@ -72,11 +113,11 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <SheetHeader>
-                <SheetTitle className="sr-only">Mobile Navigation Menu</SheetTitle>
                  <Link href="/" className="flex items-center gap-2 mb-4">
                     <Building2 className="h-6 w-6 text-primary" />
                     <span className="font-bold text-lg font-headline">ResiConnect</span>
                 </Link>
+                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               </SheetHeader>
               <div className="flex flex-col gap-6 p-6 pt-2">
                 <nav className="flex flex-col gap-4">

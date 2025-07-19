@@ -21,7 +21,7 @@ export const properties: Property[] = [
     features: ['Forest View', 'Infinity Pool', 'Home Theater', 'Gourmet Kitchen', '3-Car Garage', 'Smart Home System'],
     agent: {
       name: 'John Doe',
-      avatar: 'https://placehold.co/100x100'
+      avatar: 'https://placehold.co/100x100/e07a5f/f2e8e5'
     },
     location: { lat: -1.3151, lng: 36.7084 }
   },
@@ -44,13 +44,13 @@ export const properties: Property[] = [
     features: ['City View', 'Rooftop Terrace', 'Fitness Center', 'Concierge Service', 'Walk-in Closet'],
     agent: {
       name: 'Jane Smith',
-      avatar: 'https://placehold.co/100x100'
+      avatar: 'https://placehold.co/100x100/81b29a/f2e8e5'
     },
     location: { lat: -1.267, lng: 36.802 }
   },
   {
     id: 3,
-    title: 'Charming Family Home in Lavington',
+    title: 'Family Home in Lavington',
     address: '789 Gitanga Road, Nairobi, Kenya',
     price: 95000000,
     bedrooms: 4,
@@ -67,7 +67,7 @@ export const properties: Property[] = [
     features: ['Large Backyard', 'DSQ', 'Updated Kitchen', 'Fireplace', 'Two-car garage'],
     agent: {
       name: 'Emily White',
-      avatar: 'https://placehold.co/100x100'
+      avatar: 'https://placehold.co/100x100/f2cc8f/4d4c4a'
     },
     location: { lat: -1.288, lng: 36.782 }
   },
@@ -90,11 +90,11 @@ export const properties: Property[] = [
     features: ['Panoramic Views', 'Private Elevator', '24/7 Security', 'Indoor Pool', 'Spa & Sauna'],
     agent: {
       name: 'Michael Chen',
-      avatar: 'https://placehold.co/100x100'
+      avatar: 'https://placehold.co/100x100/3d405b/f2e8e5'
     },
     location: { lat: -1.294, lng: 36.789 }
   },
-    {
+  {
     id: 5,
     title: 'Beachfront Property in Diani',
     address: '555 Diani Beach Road, Kwale, Kenya',
@@ -113,7 +113,7 @@ export const properties: Property[] = [
     features: ['Direct Beach Access', 'Ocean Views', 'Private Pool', 'Guest House', 'Landscaped Gardens'],
     agent: {
       name: 'Aisha Omar',
-      avatar: 'https://placehold.co/100x100'
+      avatar: 'https://placehold.co/100x100/e07a5f/ffffff'
     },
     location: { lat: -4.321, lng: 39.570 }
   },
@@ -136,14 +136,146 @@ export const properties: Property[] = [
     features: ['Gated Community', 'Large Garden', 'High Ceilings', '24/7 Security', 'Clubhouse Access'],
     agent: {
       name: 'David King',
-      avatar: 'https://placehold.co/100x100'
+      avatar: 'https://placehold.co/100x100/3d405b/ffffff'
     },
     location: { lat: -1.222, lng: 36.822 }
   },
+  {
+    id: 7,
+    title: 'Cozy Cottage in Naivasha',
+    address: '77 Moi South Lake Road, Naivasha',
+    price: 45000000,
+    bedrooms: 3,
+    bathrooms: 2,
+    area: 2100,
+    type: 'House',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/f2cc8f/4d4c4a',
+      'https://placehold.co/800x600/e07a5f/f2e8e5',
+    ],
+    description: 'A charming cottage getaway with stunning views of Lake Naivasha. Perfect for weekend escapes or a peaceful permanent residence. Includes a mature garden and a private boat jetty.',
+    features: ['Lake View', 'Mature Garden', 'Private Jetty', 'Fireplace'],
+    agent: {
+      name: 'Susan Kamau',
+      avatar: 'https://placehold.co/100x100/f2cc8f/4d4c4a'
+    },
+    location: { lat: -0.716, lng: 36.433 }
+  },
+  {
+    id: 8,
+    title: 'Studio Apartment in Kileleshwa',
+    address: '88 Othaya Road, Nairobi',
+    price: 12500000,
+    bedrooms: 1,
+    bathrooms: 1,
+    area: 650,
+    type: 'Apartment',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/81b29a/f2e8e5',
+      'https://placehold.co/800x600/e07a5f/f2e8e5',
+    ],
+    description: 'A compact and modern studio apartment in a highly sought-after area. Ideal for young professionals or as an investment property. The complex includes a gym and swimming pool.',
+    features: ['Gym', 'Swimming Pool', 'Borehole', 'Backup Generator'],
+    agent: {
+      name: 'Jane Smith',
+      avatar: 'https://placehold.co/100x100/81b29a/f2e8e5'
+    },
+    location: { lat: -1.282, lng: 36.788 }
+  },
+  {
+    id: 9,
+    title: 'Colonial House in Muthaiga',
+    address: '99 Muthaiga Road, Nairobi',
+    price: 250000000,
+    bedrooms: 6,
+    bathrooms: 7,
+    area: 7500,
+    type: 'House',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/e07a5f/f2e8e5',
+      'https://placehold.co/800x600/3d405b/f2e8e5',
+    ],
+    description: 'A grand colonial-style home set on a one-acre plot in prestigious Muthaiga. This property exudes old-world charm with modern updates, featuring sprawling gardens and staff quarters.',
+    features: ['One Acre Plot', 'Swimming Pool', 'Staff Quarters', 'Gated Community'],
+    agent: {
+      name: 'John Doe',
+      avatar: 'https://placehold.co/100x100/e07a5f/f2e8e5'
+    },
+    location: { lat: -1.252, lng: 36.833 }
+  },
+  {
+    id: 10,
+    title: 'Penthouse in Nyali',
+    address: '111 Links Road, Mombasa',
+    price: 85000000,
+    bedrooms: 4,
+    bathrooms: 4,
+    area: 4000,
+    type: 'Condo',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/3d405b/f2e8e5',
+      'https://placehold.co/800x600/f2cc8f/4d4c4a',
+    ],
+    description: 'Breathtaking ocean views from this exclusive penthouse in Nyali. This residence offers luxury living with expansive balconies, a rooftop pool, and direct beach access.',
+    features: ['Ocean View', 'Rooftop Pool', 'Direct Beach Access', 'High-Speed Lifts'],
+    agent: {
+      name: 'Aisha Omar',
+      avatar: 'https://placehold.co/100x100/3d405b/f2e8e5'
+    },
+    location: { lat: -4.043, lng: 39.668 }
+  },
+    {
+    id: 11,
+    title: 'Suburban Home in Thika',
+    address: '21 Thika Greens, Thika',
+    price: 55000000,
+    bedrooms: 4,
+    bathrooms: 4,
+    area: 3500,
+    type: 'House',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/81b29a/f2e8e5',
+      'https://placehold.co/800x600/e07a5f/f2e8e5',
+    ],
+    description: 'A beautiful family home within a premier golf estate. Enjoy serene living with access to an 18-hole championship golf course and other club amenities. Secure and peaceful environment.',
+    features: ['Golf Estate', 'Clubhouse', 'Gated Community', 'Manicured Lawns'],
+    agent: {
+      name: 'Emily White',
+      avatar: 'https://placehold.co/100x100/81b29a/f2e8e5'
+    },
+    location: { lat: -1.041, lng: 37.081 }
+  },
+  {
+    id: 12,
+    title: 'Apartment in Riverside',
+    address: '33 Riverside Drive, Nairobi',
+    price: 42000000,
+    bedrooms: 3,
+    bathrooms: 3,
+    area: 2000,
+    type: 'Apartment',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/f2cc8f/4d4c4a',
+      'https://placehold.co/800x600/3d405b/f2e8e5',
+    ],
+    description: 'A modern and spacious apartment in the tranquil and secure Riverside area. Features a large balcony overlooking lush greenery, perfect for relaxation. High-quality finishes throughout.',
+    features: ['River View', 'High Security', 'Swimming Pool', 'Gym'],
+    agent: {
+      name: 'Michael Chen',
+      avatar: 'https://placehold.co/100x100/f2cc8f/4d4c4a'
+    },
+    location: { lat: -1.270, lng: 36.805 }
+  }
 ];
 
 export const sellerAnalytics: Analytics = {
-  activeListings: 6,
+  activeListings: 12,
   totalViews: 125321,
   totalMessages: 78,
   viewsData: [
@@ -158,9 +290,9 @@ export const sellerAnalytics: Analytics = {
 };
 
 export const sellerMessages: Message[] = [
-    { id: 'MSG001', name: 'Alice Johnson', property: 'Modern Villa', date: '2 days ago', status: 'Unread' },
-    { id: 'MSG002', name: 'Bob Williams', property: 'Downtown Apartment', date: '3 days ago', status: 'Read' },
-    { id: 'MSG003', name: 'Charlie Brown', property: 'Modern Villa', date: '5 days ago', status: 'Read' },
-    { id: 'MSG004', name: 'Diana Prince', property: 'Suburban Home', date: '1 week ago', status: 'Read' },
-    { id: 'MSG005', name: 'Ethan Hunt', property: 'Penthouse Condo', date: '1 week ago', status: 'Unread' },
+    { id: 'MSG001', name: 'Alice Johnson', property: 'Modern Villa in Karen', date: '2 days ago', status: 'Unread', body: 'Hello, I saw your listing for the Modern Villa in Karen and I am very interested. Could you please let me know if it\'s possible to schedule a viewing this weekend? Saturday afternoon would be ideal for me. Thank you!' },
+    { id: 'MSG002', name: 'Bob Williams', property: 'Chic Apartment in Westlands', date: '3 days ago', status: 'Read', body: 'Hi, I have a few questions about the apartment in Westlands. Are the service charges included in the price? And what is the policy on pets? I have a small dog. Looking forward to your response.' },
+    { id: 'MSG003', name: 'Charlie Brown', property: 'Modern Villa in Karen', date: '5 days ago', status: 'Read', body: 'Good day, regarding the villa in Karen - are you negotiable on the price? I would be a cash buyer. Please advise.' },
+    { id: 'MSG004', name: 'Diana Prince', property: 'Family Home in Lavington', date: '1 week ago', status: 'Read', body: 'I love the look of the family home in Lavington! My family and I are relocating to Nairobi and this seems perfect. Can you share more photos of the backyard and the master bedroom? Thanks a lot.' },
+    { id: 'MSG005', name: 'Ethan Hunt', property: 'Luxury Penthouse in Kilimani', date: '1 week ago', status: 'Unread', body: 'Inquiry about the Kilimani penthouse. Is the private elevator exclusive to the penthouse or shared with other floors? Also, what are the monthly maintenance fees? Thank you for the information.' },
 ];

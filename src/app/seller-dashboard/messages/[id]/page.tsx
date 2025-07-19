@@ -1,0 +1,87 @@
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { sellerMessages, properties } from "@/lib/dummy-data";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ArrowLeft, Send } from "lucide-react";
+import Image from "next/image";
+
+export default function MessageDetailPage({ params }: { params: { id: string } }) {
+  const message = sellerMessages.find((m) => m.id === params.id);
+
+  if (!message) {
+    notFound();
+  }
+
+  const property = properties.find((p) => p.title === message.property);
+
+  return (
+    <div className="bg-secondary/50 min-h-[calc(100vh-4rem)]">
+      <div className="container mx-auto px-4 md:px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <Button asChild variant="ghost" className="mb-4">
+            <Link href="/seller-dashboard?tab=messages">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Inbox
+            </Link>
+          </Button>
+
+          <Card className="shadow-lg">
+            <CardHeader className="flex flex-row items-start gap-4">
+              <Avatar className="w-12 h-12 border-2 border-primary/50">
+                <AvatarImage src={`https://placehold.co/100x100/f2e8e5/4d4c4a`} alt={message.name} data-ai-hint="person" />
+                <AvatarFallback>{message.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle className="text-2xl font-headline">{message.name}</CardTitle>
+                <CardDescription className="text-base">{message.date}</CardDescription>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Separator />
+              {property && (
+                <div className="my-6">
+                  <h3 className="text-lg font-semibold mb-2">Inquiry about: {property.title}</h3>
+                  <Link href={`/listing/${property.id}`}>
+                    <div className="flex items-center gap-4 p-3 border rounded-lg hover:bg-secondary/50 transition-colors">
+                      <Image 
+                        src={property.images[0]} 
+                        alt={property.title} 
+                        width={100} 
+                        height={75} 
+                        className="rounded-md object-cover"
+                        data-ai-hint={`${property.type.toLowerCase()} exterior`}
+                      />
+                      <div>
+                        <p className="font-semibold">{property.title}</p>
+                        <p className="text-sm text-muted-foreground">{property.address}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              )}
+              <div className="prose prose-lg text-foreground max-w-none mt-6 bg-secondary/30 p-4 rounded-lg">
+                <p>{message.body}</p>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <div className="w-full">
+                <h3 className="text-xl font-headline font-semibold mb-4">Reply</h3>
+                <div className="grid w-full gap-4">
+                  <Textarea placeholder={`Hi ${message.name.split(' ')[0]},\n\n`} rows={6} />
+                  <Button size="lg" className="justify-self-end">
+                    <Send className="mr-2 h-5 w-5" />
+                    Send Reply
+                  </Button>
+                </div>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}

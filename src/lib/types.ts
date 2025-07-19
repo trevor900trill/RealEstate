@@ -37,4 +37,5 @@ export interface Message {
   property: string;
   date: string;
   status: 'Read' | 'Unread';
+  body: string;
 }

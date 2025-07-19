@@ -1,3 +1,5 @@
+'use client'
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { properties } from '@/lib/dummy-data';
@@ -7,9 +9,12 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone, Text, Heart } from 'lucide-react';
+import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone, Text, Heart, MessageSquare } from 'lucide-react';
+import ContactAgentDialog from '@/components/property/ContactAgentDialog';
+import { useState } from 'react';
 
 export default function ListingPage({ params }: { params: { id: string } }) {
+  const [isContactOpen, setContactOpen] = useState(false);
   const property = properties.find((p) => p.id.toString() === params.id);
 
   if (!property) {
@@ -33,6 +38,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   ];
 
   return (
+    <>
     <div className="bg-background">
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
@@ -129,17 +135,26 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                 <p className="text-muted-foreground">Listing Agent</p>
               </CardHeader>
               <CardContent>
-                <Button className="w-full text-lg h-12 mb-4">
-                  <Mail className="mr-2 h-5 w-5" /> Contact Agent
+                <Button className="w-full text-lg h-12 mb-4" onClick={() => setContactOpen(true)}>
+                  <MessageSquare className="mr-2 h-5 w-5" /> Contact Agent
                 </Button>
-                <Button variant="outline" className="w-full text-lg h-12">
-                  <Phone className="mr-2 h-5 w-5" /> (123) 456-7890
-                </Button>
+                <a href="tel:+254123456789">
+                  <Button variant="outline" className="w-full text-lg h-12">
+                    <Phone className="mr-2 h-5 w-5" /> Call Agent
+                  </Button>
+                </a>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
     </div>
+    <ContactAgentDialog 
+      isOpen={isContactOpen} 
+      onOpenChange={setContactOpen} 
+      property={property} 
+      agent={property.agent}
+    />
+    </>
   );
 }
