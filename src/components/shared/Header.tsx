@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Menu, Building2, Heart, LogOut, Mail, UserPlus, Home, LayoutList } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAuth } from "@/hooks/useAuth.tsx";
 import LoginPrompt from "../auth/LoginPrompt";
 import { useState } from "react";
+import { ScrollArea } from "../ui/scroll-area";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -23,12 +24,20 @@ export default function Header() {
   const pathname = usePathname();
   const { isLoggedIn, isSeller, logout } = useAuth();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSellerNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!isLoggedIn) {
       e.preventDefault();
       setShowLoginPrompt(true);
+      setMobileMenuOpen(false);
+    } else {
+      setMobileMenuOpen(false);
     }
+  };
+
+  const handleLinkClick = () => {
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -145,7 +154,7 @@ export default function Header() {
           )}
         </div>
         <div className="md:hidden">
-          <Sheet>
+          <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
@@ -154,53 +163,55 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <SheetHeader>
-                 <Link href="/" className="flex items-center gap-2 mb-4">
+                 <Link href="/" onClick={handleLinkClick} className="flex items-center gap-2 mb-4">
                     <Building2 className="h-6 w-6 text-primary" />
                     <span className="font-bold text-lg font-headline">Placeholder</span>
                 </Link>
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               </SheetHeader>
-              <div className="flex flex-col h-full">
-                <nav className="grid gap-4 py-6">
-                  <Link href="/" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                    <Home className="h-5 w-5" />
-                    Home
-                  </Link>
-                  <Link href="/#listings" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                    <LayoutList className="h-5 w-5" />
-                    Listings
-                  </Link>
-                  <Link href="/seller-dashboard" onClick={handleSellerNav} className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                    <Building2 className="h-5 w-5" />
-                    For Sellers
-                  </Link>
-                  {isLoggedIn && (
-                    <>
-                    <Link href="/favorites" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                      <Heart className="h-5 w-5" />
-                      Favorites
+              <ScrollArea className="h-[calc(100%-80px)]">
+                <div className="flex flex-col justify-between h-full pr-4">
+                    <nav className="grid gap-4 py-6">
+                    <Link onClick={handleLinkClick} href="/" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                        <Home className="h-5 w-5" />
+                        Home
                     </Link>
-                    <Link href="/messages" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                      <Mail className="h-5 w-5" />
-                      Messages
+                    <Link onClick={handleLinkClick} href="/#listings" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                        <LayoutList className="h-5 w-5" />
+                        Listings
                     </Link>
-                    </>
-                  )}
-                </nav>
-                <div className="border-t pt-6 mt-auto">
-                  {isLoggedIn ? (
-                    <Button className="w-full" onClick={logout}>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log Out
-                    </Button>
-                  ) : (
-                    <div className="grid gap-2">
-                      <Button variant="outline" className="w-full" asChild><Link href="/login">Sign In</Link></Button>
-                      <Button className="w-full" asChild><Link href="/register">Register</Link></Button>
+                    <Link onClick={handleSellerNav} href="/seller-dashboard" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                        <Building2 className="h-5 w-5" />
+                        For Sellers
+                    </Link>
+                    {isLoggedIn && (
+                        <>
+                        <Link onClick={handleLinkClick} href="/favorites" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                        <Heart className="h-5 w-5" />
+                        Favorites
+                        </Link>
+                        <Link onClick={handleLinkClick} href="/messages" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                        <Mail className="h-5 w-5" />
+                        Messages
+                        </Link>
+                        </>
+                    )}
+                    </nav>
+                    <div className="border-t pt-6 mt-6">
+                    {isLoggedIn ? (
+                        <Button className="w-full" onClick={() => { logout(); handleLinkClick(); }}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log Out
+                        </Button>
+                    ) : (
+                        <div className="grid gap-2">
+                        <Button asChild variant="outline" className="w-full" onClick={handleLinkClick}><Link href="/login">Sign In</Link></Button>
+                        <Button asChild className="w-full" onClick={handleLinkClick}><Link href="/register">Register</Link></Button>
+                        </div>
+                    )}
                     </div>
-                  )}
                 </div>
-              </div>
+              </ScrollArea>
             </SheetContent>
           </Sheet>
         </div>
