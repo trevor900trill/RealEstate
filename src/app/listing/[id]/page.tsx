@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone, Text } from 'lucide-react';
+import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone, Text, Heart } from 'lucide-react';
 
 export default function ListingPage({ params }: { params: { id: string } }) {
   const property = properties.find((p) => p.id.toString() === params.id);
@@ -17,9 +17,10 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   }
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-KE', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'KES',
+      minimumFractionDigits: 0,
     }).format(price);
   };
 
@@ -32,11 +33,11 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   ];
 
   return (
-    <div className="bg-secondary">
+    <div className="bg-background">
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
-            <Card className="overflow-hidden shadow-lg">
+            <Card className="overflow-hidden shadow-lg rounded-xl">
               <CardContent className="p-0">
                 <Carousel className="w-full">
                   <CarouselContent>
@@ -54,7 +55,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
               </CardContent>
             </Card>
 
-            <Card className="mt-8 shadow-lg">
+            <Card className="mt-8 shadow-lg rounded-xl">
               <CardHeader>
                 <div className="flex flex-col md:flex-row justify-between md:items-start">
                   <div>
@@ -64,8 +65,14 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                       <span className="text-lg">{property.address}</span>
                     </div>
                   </div>
-                  <div className="mt-4 md:mt-0 text-3xl font-bold text-primary whitespace-nowrap">
-                    {formatPrice(property.price)}
+                  <div className="mt-4 md:mt-0 text-right">
+                     <div className="text-3xl font-bold font-headline text-primary whitespace-nowrap">
+                        {formatPrice(property.price)}
+                     </div>
+                      <Button variant="ghost" size="icon" className="mt-2 text-muted-foreground hover:text-primary">
+                        <Heart className="w-7 h-7" />
+                        <span className="sr-only">Favorite</span>
+                      </Button>
                   </div>
                 </div>
               </CardHeader>
@@ -85,8 +92,8 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                 <h3 className="text-2xl font-headline font-semibold mb-4">Property Details</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6 text-lg">
                   {propertyDetails.map((detail) => (
-                    <div key={detail.label} className="flex items-center">
-                      <detail.icon className="w-6 h-6 mr-3 text-primary" />
+                    <div key={detail.label} className="flex items-center p-3 bg-secondary/30 rounded-lg">
+                      <detail.icon className="w-7 h-7 mr-4 text-primary" />
                       <div>
                         <p className="text-muted-foreground text-sm">{detail.label}</p>
                         <p className="font-semibold">{detail.value}</p>
@@ -100,7 +107,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                 <h3 className="text-2xl font-headline font-semibold mb-4">Features</h3>
                 <div className="flex flex-wrap gap-3">
                   {property.features.map((feature, index) => (
-                    <Badge key={index} variant="outline" className="text-base py-1 px-3 bg-accent/20 border-accent text-accent-foreground">
+                    <Badge key={index} variant="secondary" className="text-base py-2 px-4 rounded-lg">
                       {feature}
                     </Badge>
                   ))}
@@ -110,7 +117,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
           </div>
           
           <div className="lg:col-span-1">
-            <Card className="sticky top-24 shadow-lg">
+            <Card className="sticky top-24 shadow-lg rounded-xl">
               <CardHeader className="text-center">
                 <div className="flex justify-center mb-4">
                   <Avatar className="w-24 h-24 border-4 border-primary/50">

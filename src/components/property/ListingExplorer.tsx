@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { Property } from '@/lib/types';
 import PropertyCard from '@/components/property/PropertyCard';
 import { Button } from '@/components/ui/button';
@@ -9,15 +9,223 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { Search, Map, List, X } from 'lucide-react';
+import { Search, Map as MapIcon, List, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Skeleton } from '@/components/ui/skeleton';
+
+const MapView = ({ properties }: { properties: Property[] }) => {
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+
+  useEffect(() => {
+    const initMap = () => {
+      if (window.google && !map) {
+        const mapInstance = new window.google.maps.Map(document.getElementById('map') as HTMLElement, {
+          center: { lat: -1.286389, lng: 36.817223 }, // Nairobi
+          zoom: 12,
+          disableDefaultUI: true,
+          styles: [
+            {
+              "featureType": "all",
+              "elementType": "geometry.fill",
+              "stylers": [
+                {
+                  "weight": "2.00"
+                }
+              ]
+            },
+            {
+              "featureType": "all",
+              "elementType": "geometry.stroke",
+              "stylers": [
+                {
+                  "color": "#9c9c9c"
+                }
+              ]
+            },
+            {
+              "featureType": "all",
+              "elementType": "labels.text",
+              "stylers": [
+                {
+                  "visibility": "on"
+                }
+              ]
+            },
+            {
+              "featureType": "landscape",
+              "elementType": "all",
+              "stylers": [
+                {
+                  "color": "#f2f2f2"
+                }
+              ]
+            },
+            {
+              "featureType": "landscape",
+              "elementType": "geometry.fill",
+              "stylers": [
+                {
+                  "color": "#ffffff"
+                }
+              ]
+            },
+            {
+              "featureType": "landscape.man_made",
+              "elementType": "geometry.fill",
+              "stylers": [
+                {
+                  "color": "#ffffff"
+                }
+              ]
+            },
+            {
+              "featureType": "poi",
+              "elementType": "all",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "road",
+              "elementType": "all",
+              "stylers": [
+                {
+                  "saturation": -100
+                },
+                {
+                  "lightness": 45
+                }
+              ]
+            },
+            {
+              "featureType": "road",
+              "elementType": "geometry.fill",
+              "stylers": [
+                {
+                  "color": "#eeeeee"
+                }
+              ]
+            },
+            {
+              "featureType": "road",
+              "elementType": "labels.text.fill",
+              "stylers": [
+                {
+                  "color": "#7b7b7b"
+                }
+              ]
+            },
+            {
+              "featureType": "road",
+              "elementType": "labels.text.stroke",
+              "stylers": [
+                {
+                  "color": "#ffffff"
+                }
+              ]
+            },
+            {
+              "featureType": "road.highway",
+              "elementType": "all",
+              "stylers": [
+                {
+                  "visibility": "simplified"
+                }
+              ]
+            },
+            {
+              "featureType": "road.arterial",
+              "elementType": "labels.icon",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "transit",
+              "elementType": "all",
+              "stylers": [
+                {
+                  "visibility": "off"
+                }
+              ]
+            },
+            {
+              "featureType": "water",
+              "elementType": "all",
+              "stylers": [
+                {
+                  "color": "#46bcec"
+                },
+                {
+                  "visibility": "on"
+                }
+              ]
+            },
+            {
+              "featureType": "water",
+              "elementType": "geometry.fill",
+              "stylers": [
+                {
+                  "color": "#c8d7d4"
+                }
+              ]
+            },
+            {
+              "featureType": "water",
+              "elementType": "labels.text.fill",
+              "stylers": [
+                {
+                  "color": "#070707"
+                }
+              ]
+            },
+            {
+              "featureType": "water",
+              "elementType": "labels.text.stroke",
+              "stylers": [
+                {
+                  "color": "#ffffff"
+                }
+              ]
+            }
+          ]
+        });
+        setMap(mapInstance);
+      }
+    };
+    initMap();
+  }, [map]);
+
+  useEffect(() => {
+    if (map) {
+      properties.forEach(property => {
+        new window.google.maps.Marker({
+          position: property.location,
+          map: map,
+          title: property.title,
+        });
+      });
+    }
+  }, [map, properties]);
+
+  return (
+    <Card className='rounded-xl shadow-lg'>
+      <CardContent className="p-2">
+        <div id="map" className="h-[70vh] w-full rounded-lg" />
+      </CardContent>
+    </Card>
+  );
+};
+
 
 export default function ListingExplorer({ properties }: { properties: Property[] }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [propertyType, setPropertyType] = useState('all');
   const [bedrooms, setBedrooms] = useState(0);
-  const [priceRange, setPriceRange] = useState([0, 5000000]);
+  const [priceRange, setPriceRange] = useState([0, 500000000]);
 
   const filteredProperties = useMemo(() => {
     return properties.filter(property => {
@@ -35,25 +243,16 @@ export default function ListingExplorer({ properties }: { properties: Property[]
     setSearchQuery('');
     setPropertyType('all');
     setBedrooms(0);
-    setPriceRange([0, 5000000]);
+    setPriceRange([0, 500000000]);
   };
   
-  const MapView = () => (
-    <Card>
-      <CardContent className="p-2">
-        <Skeleton className="h-[70vh] w-full" />
-      </CardContent>
-    </Card>
-  );
-
   return (
     <div>
-        <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4 text-center">Explore Properties</h2>
-      <Card className="mb-8 p-6 shadow-lg bg-secondary/50">
+        <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">Explore Properties</h2>
+      <Card className="mb-8 p-6 shadow-lg bg-background rounded-xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-          {/* Search Input */}
           <div className="lg:col-span-2">
-            <Label htmlFor="search" className="text-sm font-semibold">Search Location or Keywords</Label>
+            <Label htmlFor="search" className="text-sm font-semibold mb-2 block">Search Location or Keywords</Label>
             <div className="relative">
               <Input
                 id="search"
@@ -67,9 +266,8 @@ export default function ListingExplorer({ properties }: { properties: Property[]
             </div>
           </div>
           
-          {/* Property Type Select */}
           <div>
-            <Label htmlFor="type" className="text-sm font-semibold">Property Type</Label>
+            <Label htmlFor="type" className="text-sm font-semibold mb-2 block">Property Type</Label>
             <Select value={propertyType} onValueChange={setPropertyType}>
               <SelectTrigger id="type" className="h-11">
                 <SelectValue placeholder="All Types" />
@@ -83,9 +281,8 @@ export default function ListingExplorer({ properties }: { properties: Property[]
             </Select>
           </div>
 
-          {/* Bedrooms Select */}
           <div>
-            <Label htmlFor="bedrooms" className="text-sm font-semibold">Bedrooms</Label>
+            <Label htmlFor="bedrooms" className="text-sm font-semibold mb-2 block">Bedrooms</Label>
             <Select value={bedrooms.toString()} onValueChange={(val) => setBedrooms(parseInt(val))}>
               <SelectTrigger id="bedrooms" className="h-11">
                 <SelectValue placeholder="Any" />
@@ -102,19 +299,18 @@ export default function ListingExplorer({ properties }: { properties: Property[]
           </div>
         </div>
 
-        {/* Price Range Slider */}
         <div className="mt-4">
-          <Label className="text-sm font-semibold">Price Range</Label>
+          <Label className="text-sm font-semibold">Price Range (KES)</Label>
           <div className="flex items-center gap-4 mt-2">
-            <span className="font-medium text-sm text-muted-foreground">${priceRange[0].toLocaleString()}</span>
+            <span className="font-medium text-sm text-muted-foreground">{priceRange[0].toLocaleString()}</span>
             <Slider
               min={0}
-              max={5000000}
-              step={100000}
+              max={500000000}
+              step={1000000}
               value={priceRange}
               onValueChange={(value) => setPriceRange(value as [number, number])}
             />
-            <span className="font-medium text-sm text-muted-foreground">${priceRange[1].toLocaleString()}{priceRange[1] === 5000000 ? '+' : ''}</span>
+            <span className="font-medium text-sm text-muted-foreground">{priceRange[1].toLocaleString()}{priceRange[1] === 500000000 ? '+' : ''}</span>
           </div>
         </div>
         
@@ -136,7 +332,7 @@ export default function ListingExplorer({ properties }: { properties: Property[]
                     <List className="h-4 w-4" /> Grid
                 </TabsTrigger>
                 <TabsTrigger value="map" className="flex items-center gap-2">
-                    <Map className="h-4 w-4" /> Map
+                    <MapIcon className="h-4 w-4" /> Map
                 </TabsTrigger>
             </TabsList>
         </div>
@@ -155,7 +351,7 @@ export default function ListingExplorer({ properties }: { properties: Property[]
             )}
         </TabsContent>
         <TabsContent value="map">
-            <MapView />
+            <MapView properties={filteredProperties} />
         </TabsContent>
       </Tabs>
     </div>

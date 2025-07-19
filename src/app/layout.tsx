@@ -4,6 +4,21 @@ import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import "./globals.css";
+import { Inter, Poppins } from 'next/font/google';
+import { cn } from "@/lib/utils";
+
+const fontBody = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+});
+
+const fontHeadline = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['600', '700'],
+  variable: '--font-headline',
+});
 
 export const metadata: Metadata = {
   title: "ResiConnect - Your Home for Real Estate",
@@ -17,13 +32,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
-        <div className="flex flex-col min-h-screen">
+      <body className={cn("antialiased", fontBody.variable, fontHeadline.variable)}>
+        <div className="flex flex-col min-h-screen font-body">
           <Header />
           <main className="flex-grow">
             {children}
