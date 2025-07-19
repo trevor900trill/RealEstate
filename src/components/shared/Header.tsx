@@ -15,8 +15,7 @@ import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/#listings", label: "Listings" },
+  { href: "/", label: "For Buyers" },
   { href: "/seller-dashboard", label: "For Sellers" },
 ];
 
@@ -83,43 +82,21 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
-                 {isSeller ? (
-                  <>
-                  <DropdownMenuLabel className="font-normal">
+                 <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">Seller Account</p>
+                      <p className="text-sm font-medium leading-none">{isSeller ? "Seller" : "Buyer"} Account</p>
                       <p className="text-xs leading-none text-muted-foreground">
-                        seller@example.com
+                        {isSeller ? "seller@example.com" : "buyer@example.com"}
                       </p>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                    <DropdownMenuItem asChild>
-                    <Link href="/seller-dashboard"><LayoutList className="mr-2 h-4 w-4" />Dashboard</Link>
+                    <Link href="/favorites"><Heart className="mr-2 h-4 w-4" />Favorites</Link>
                   </DropdownMenuItem>
                    <DropdownMenuItem asChild>
                       <Link href="/messages"><Mail className="mr-2 h-4 w-4" />Messages</Link>
                     </DropdownMenuItem>
-                  </>
-                ) : (
-                  <>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">Buyer Account</p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                          buyer@example.com
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link href="/favorites"><Heart className="mr-2 h-4 w-4" />Favorites</Link>
-                    </DropdownMenuItem>
-                     <DropdownMenuItem asChild>
-                      <Link href="/messages"><Mail className="mr-2 h-4 w-4" />Messages</Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
                    <LogOut className="mr-2 h-4 w-4" />
@@ -174,11 +151,7 @@ export default function Header() {
                     <nav className="grid gap-4 py-6">
                     <Link onClick={handleLinkClick} href="/" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
                         <Home className="h-5 w-5" />
-                        Home
-                    </Link>
-                    <Link onClick={handleLinkClick} href="/#listings" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                        <LayoutList className="h-5 w-5" />
-                        Listings
+                        For Buyers
                     </Link>
                     <Link onClick={handleSellerNav} href="/seller-dashboard" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
                         <Building2 className="h-5 w-5" />
