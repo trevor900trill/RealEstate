@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -39,21 +40,30 @@ export default function Header() {
           <span className="text-2xl font-bold font-headline tracking-tight">ResiConnect</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-base font-medium">
-          {navLinks.map((link) => (
-             <Link
-              key={link.href}
-              href={link.href}
-              onClick={link.label === "For Sellers" ? handleSellerNav : undefined}
-              className={cn(
-                "transition-colors hover:text-primary pb-1",
-                (pathname === link.href || (link.href.includes("#") && pathname === '/'))
-                  ? "text-primary font-semibold border-b-2 border-primary"
-                  : "text-muted-foreground"
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            // Specific check for homepage vs hash links on homepage
+            const isActive = link.href === '/' 
+              ? pathname === '/' 
+              : link.href.startsWith('/#') 
+                ? pathname === '/' // Highlight listings on homepage
+                : pathname.startsWith(link.href) && link.href !== '/';
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={link.label === "For Sellers" ? handleSellerNav : undefined}
+                className={cn(
+                  "transition-colors hover:text-primary pb-1",
+                  isActive
+                    ? "text-primary font-semibold border-b-2 border-primary"
+                    : "text-muted-foreground"
+                )}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
         <div className="hidden md:flex items-center gap-2">
           {isLoggedIn ? (

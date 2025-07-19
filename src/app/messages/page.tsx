@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { sellerMessages } from "@/lib/dummy-data";
+import { sellerMessages, properties } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Mail, AlertTriangle } from "lucide-react";
@@ -15,17 +15,19 @@ import MessagesTable from "@/components/seller/MessagesTable";
 
 // For demo purposes, we'll pretend these are the buyer's messages
 // In a real app, this data would come from a database based on the user's ID
-const buyerMessages = sellerMessages.slice(3, 5).map(m => ({
-    ...m,
-    name: `Agent for ${m.property.split(' ').slice(0,2).join(' ')}`, // Simulate agent name
-    id: `B${m.id}`
-}));
+const buyerMessages = sellerMessages.slice(3, 5).map(m => {
+    const property = properties.find(p => p.title === m.property);
+    return {
+        ...m,
+        name: property ? property.agent.name : 'Listing Agent', // Simulate agent name
+        id: `B-${m.id}`
+    }
+});
 
 const BuyerInbox = () => (
     <div className="space-y-4">
         {buyerMessages.length > 0 ? buyerMessages.map((message) => (
-            // In a real app, this link would go to a detailed message view like /messages/B-MSG004
-            <Link href="#" key={message.id}>
+            <Link href={`/messages/${message.id}`} key={message.id}>
                 <div className={cn(
                     "flex items-start gap-4 p-4 rounded-lg border hover:bg-secondary/50 transition-colors",
                     message.status === 'Unread' && 'bg-primary/5'
@@ -96,7 +98,7 @@ export default function MessagesPage() {
                             {isSeller ? "Seller Inbox" : "Your Inbox"}
                         </CardTitle>
                          <CardDescription>
-                            {isSeller ? "Manage messages from potential buyers about your listings." : "Conversations with sellers about properties you're interested in."}
+                            {isSeller ? "Manage messages from potential buyers about your listings." : "Conversations with agents about properties you're interested in."}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
