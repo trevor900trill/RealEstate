@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AuthLayout from "@/components/auth/AuthLayout";
-import { Building2 } from "lucide-react";
+import { Building2, LogIn } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth.tsx";
 
 export default function LoginPage() {
@@ -39,7 +39,7 @@ export default function LoginPage() {
               </Link>
             </div>
           <CardTitle className="text-3xl font-headline">Welcome Back</CardTitle>
-          <CardDescription>Enter your email below to login to your account</CardDescription>
+          <CardDescription>Enter your credentials to access your account.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="grid gap-4">
@@ -57,12 +57,15 @@ export default function LoginPage() {
               <Input id="password" type="password" required defaultValue="password" />
             </div>
             <Button type="submit" className="w-full">
-              Login as Buyer
+              <LogIn className="mr-2 h-4 w-4" /> Login
             </Button>
           </form>
-          <Button variant="outline" className="w-full mt-4" onClick={handleSellerLogin}>
-              Login as Seller (Demo)
-          </Button>
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            <p className="mb-2">For demo purposes:</p>
+            <Button variant="outline" className="w-full" onClick={handleSellerLogin}>
+              Login as Seller
+            </Button>
+          </div>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Link href="/register" className="underline">

@@ -67,21 +67,35 @@ export default function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{isSeller ? 'John Doe (Seller)' : 'Jane Doe (Buyer)'}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {isSeller ? 'seller@example.com' : 'buyer@example.com'}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {isSeller ? (
+                 {isSeller ? (
+                  <>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none">Seller Account</p>
+                      <p className="text-xs leading-none text-muted-foreground">
+                        seller@example.com
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
                    <DropdownMenuItem asChild>
-                    <Link href="/seller-dashboard"><LayoutList className="mr-2 h-4 w-4" />My Listings</Link>
+                    <Link href="/seller-dashboard"><LayoutList className="mr-2 h-4 w-4" />Dashboard</Link>
                   </DropdownMenuItem>
+                   <DropdownMenuItem asChild>
+                      <Link href="/seller-dashboard?tab=messages"><Mail className="mr-2 h-4 w-4" />Messages</Link>
+                    </DropdownMenuItem>
+                  </>
                 ) : (
                   <>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">Buyer Account</p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          buyer@example.com
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
                       <Link href="/favorites"><Heart className="mr-2 h-4 w-4" />Favorites</Link>
                     </DropdownMenuItem>
