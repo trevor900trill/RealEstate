@@ -12,18 +12,18 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ArrowLeft, UploadCloud } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth.tsx";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const propertyFormSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters long." }),
   address: z.string().min(10, { message: "Please enter a valid address." }),
   price: z.coerce.number().min(1, { message: "Price must be greater than 0." }),
-  bedrooms: z.coerce.number().min(1, { message: "Must have at least 1 bedroom." }),
-  bathrooms: z.coerce.number().min(1, { message: "Must have at least 1 bathroom." }),
+  bedrooms: z.coerce.number().optional(),
+  bathrooms: z.coerce.number().optional(),
   area: z.coerce.number().min(10, { message: "Area must be at least 10 sqft." }),
-  type: z.enum(["House", "Apartment", "Condo"], { required_error: "You need to select a property type."}),
+  type: z.enum(["House", "Apartment", "Condo", "Plot"], { required_error: "You need to select a property type."}),
   status: z.enum(["For Sale", "For Rent"], { required_error: "You need to select a status."}),
   description: z.string().min(20, { message: "Description must be at least 20 characters." }),
   features: z.string().min(3, { message: "Please list at least one feature."}),
@@ -33,6 +33,7 @@ const propertyFormSchema = z.object({
 export default function AddPropertyPage() {
     const { isSeller, isLoggedIn } = useAuth();
     const router = useRouter();
+    const [selectedType, setSelectedType] = useState<string | undefined>();
 
     useEffect(() => {
         if (!isLoggedIn || !isSeller) {
@@ -54,6 +55,11 @@ export default function AddPropertyPage() {
         },
     });
 
+    const handleTypeChange = (value: string) => {
+        setSelectedType(value);
+        form.setValue("type", value as "House" | "Apartment" | "Condo" | "Plot");
+    }
+
     function onSubmit(values: z.infer<typeof propertyFormSchema>) {
         console.log(values)
         // In a real app, you would handle form submission here,
@@ -65,6 +71,8 @@ export default function AddPropertyPage() {
     if (!isLoggedIn || !isSeller) {
         return null; // Or a loading spinner
     }
+    
+    const showBedsAndBaths = selectedType && selectedType !== 'Plot';
 
     return (
         <div className="bg-secondary/40 min-h-[calc(100vh-4rem)]">
@@ -111,6 +119,29 @@ export default function AddPropertyPage() {
                                         )}
                                     />
                                     <div className="grid md:grid-cols-3 gap-8">
+                                         <FormField
+                                            control={form.control}
+                                            name="type"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                <FormLabel>Property Type</FormLabel>
+                                                <Select onValueChange={handleTypeChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select a property type" />
+                                                    </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                    <SelectItem value="House">House</SelectItem>
+                                                    <SelectItem value="Apartment">Apartment</SelectItem>
+                                                    <SelectItem value="Condo">Condo</SelectItem>
+                                                    <SelectItem value="Plot">Plot</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
                                         <FormField
                                             control={form.control}
                                             name="price"
@@ -126,34 +157,6 @@ export default function AddPropertyPage() {
                                         />
                                         <FormField
                                             control={form.control}
-                                            name="bedrooms"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Bedrooms</FormLabel>
-                                                    <FormControl>
-                                                        <Input type="number" min="1" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="bathrooms"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Bathrooms</FormLabel>
-                                                    <FormControl>
-                                                        <Input type="number" min="1" {...field} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-                                    <div className="grid md:grid-cols-3 gap-8">
-                                        <FormField
-                                            control={form.control}
                                             name="area"
                                             render={({ field }) => (
                                                 <FormItem>
@@ -165,28 +168,38 @@ export default function AddPropertyPage() {
                                                 </FormItem>
                                             )}
                                         />
-                                        <FormField
-                                            control={form.control}
-                                            name="type"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                <FormLabel>Property Type</FormLabel>
-                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                    <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select a property type" />
-                                                    </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                    <SelectItem value="House">House</SelectItem>
-                                                    <SelectItem value="Apartment">Apartment</SelectItem>
-                                                    <SelectItem value="Condo">Condo</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                                <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+                                    </div>
+                                    <div className="grid md:grid-cols-3 gap-8">
+                                        {showBedsAndBaths && (
+                                            <>
+                                                <FormField
+                                                    control={form.control}
+                                                    name="bedrooms"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Bedrooms</FormLabel>
+                                                            <FormControl>
+                                                                <Input type="number" min="1" {...field} />
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="bathrooms"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Bathrooms</FormLabel>
+                                                            <FormControl>
+                                                                <Input type="number" min="1" {...field} />
+                                                            </FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </>
+                                        )}
                                          <FormField
                                             control={form.control}
                                             name="status"

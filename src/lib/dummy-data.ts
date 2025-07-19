@@ -228,7 +228,7 @@ export const properties: Property[] = [
     },
     location: { lat: -4.043, lng: 39.668 }
   },
-    {
+  {
     id: 11,
     title: 'Suburban Home in Thika',
     address: '21 Thika Greens, Thika',
@@ -271,11 +271,31 @@ export const properties: Property[] = [
       avatar: 'https://placehold.co/100x100/e07a5f/f2e8e5'
     },
     location: { lat: -1.270, lng: 36.805 }
+  },
+  {
+    id: 13,
+    title: 'Prime 1/2 Acre Plot in Kitengela',
+    address: 'Acacia Road, Kitengela, Kajiado',
+    price: 8000000,
+    area: 21780, // 1/2 acre in sqft
+    type: 'Plot',
+    status: 'For Sale',
+    images: [
+      'https://placehold.co/800x600/e07a5f/f2e8e5',
+      'https://placehold.co/800x600/e07a5f/f2e8e5',
+    ],
+    description: 'A prime half-acre plot in a rapidly developing area of Kitengela. Ideal for building your dream home or for investment purposes. Water and electricity are available on site.',
+    features: ['Ready Title Deed', 'Water on Site', 'Electricity on Site', 'Developing Neighborhood'],
+    agent: {
+      name: 'David King',
+      avatar: 'https://placehold.co/100x100/e07a5f/f2e8e5'
+    },
+    location: { lat: -1.500, lng: 36.955 }
   }
 ];
 
 export const sellerAnalytics: Analytics = {
-  activeListings: 12,
+  activeListings: 13,
   totalViews: 125321,
   totalMessages: 78,
   viewsData: [

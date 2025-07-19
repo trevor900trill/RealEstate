@@ -31,98 +31,6 @@ const MapView = ({ properties, onMarkerClick }: { properties: Property[], onMark
           center: { lat: -1.286389, lng: 36.817223 }, // Nairobi
           zoom: 12,
           disableDefaultUI: true,
-          styles: [
-            {
-              "featureType": "all",
-              "elementType": "geometry.fill",
-              "stylers": [{ "weight": "2.00" }]
-            },
-            {
-              "featureType": "all",
-              "elementType": "geometry.stroke",
-              "stylers": [{ "color": "#9c9c9c" }]
-            },
-            {
-              "featureType": "all",
-              "elementType": "labels.text",
-              "stylers": [{ "visibility": "on" }]
-            },
-            {
-              "featureType": "landscape",
-              "elementType": "all",
-              "stylers": [{ "color": "#f2f2f2" }]
-            },
-            {
-              "featureType": "landscape",
-              "elementType": "geometry.fill",
-              "stylers": [{ "color": "#ffffff" }]
-            },
-            {
-              "featureType": "landscape.man_made",
-              "elementType": "geometry.fill",
-              "stylers": [{ "color": "#ffffff" }]
-            },
-            {
-              "featureType": "poi",
-              "elementType": "all",
-              "stylers": [{ "visibility": "off" }]
-            },
-            {
-              "featureType": "road",
-              "elementType": "all",
-              "stylers": [{ "saturation": -100 }, { "lightness": 45 }]
-            },
-            {
-              "featureType": "road",
-              "elementType": "geometry.fill",
-              "stylers": [{ "color": "#eeeeee" }]
-            },
-            {
-              "featureType": "road",
-              "elementType": "labels.text.fill",
-              "stylers": [{ "color": "#7b7b7b" }]
-            },
-            {
-              "featureType": "road",
-              "elementType": "labels.text.stroke",
-              "stylers": [{ "color": "#ffffff" }]
-            },
-            {
-              "featureType": "road.highway",
-              "elementType": "all",
-              "stylers": [{ "visibility": "simplified" }]
-            },
-            {
-              "featureType": "road.arterial",
-              "elementType": "labels.icon",
-              "stylers": [{ "visibility": "off" }]
-            },
-            {
-              "featureType": "transit",
-              "elementType": "all",
-              "stylers": [{ "visibility": "off" }]
-            },
-            {
-              "featureType": "water",
-              "elementType": "all",
-              "stylers": [{ "color": "#46bcec" }, { "visibility": "on" }]
-            },
-            {
-              "featureType": "water",
-              "elementType": "geometry.fill",
-              "stylers": [{ "color": "#c8d7d4" }]
-            },
-            {
-              "featureType": "water",
-              "elementType": "labels.text.fill",
-              "stylers": [{ "color": "#070707" }]
-            },
-            {
-              "featureType": "water",
-              "elementType": "labels.text.stroke",
-              "stylers": [{ "color": "#ffffff" }]
-            }
-          ]
         });
         setMap(mapInstance);
       }
@@ -170,7 +78,7 @@ export default function ListingExplorer({ properties }: { properties: Property[]
       const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                             property.address.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesType = propertyType === 'all' || property.type.toLowerCase() === propertyType;
-      const matchesBedrooms = bedrooms === 0 || property.bedrooms >= bedrooms;
+      const matchesBedrooms = bedrooms === 0 || (property.bedrooms && property.bedrooms >= bedrooms);
       const matchesPrice = property.price >= priceRange[0] && property.price <= priceRange[1];
 
       return matchesSearch && matchesType && matchesBedrooms && matchesPrice;
@@ -237,6 +145,7 @@ export default function ListingExplorer({ properties }: { properties: Property[]
                 <SelectItem value="House">House</SelectItem>
                 <SelectItem value="Apartment">Apartment</SelectItem>
                 <SelectItem value="Condo">Condo</SelectItem>
+                <SelectItem value="Plot">Plot</SelectItem>
               </SelectContent>
             </Select>
           </div>

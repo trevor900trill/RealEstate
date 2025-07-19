@@ -1,7 +1,7 @@
 'use client'
 
+import { use, useState } from 'react';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 import { properties } from '@/lib/dummy-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,9 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BedDouble, Bath, Expand, MapPin, Building, Tag, Phone, Text, Heart, MessageSquare, Building2 } from 'lucide-react';
+import { BedDouble, Bath, Expand, MapPin, Building, Tag, Phone, Text, Heart, MessageSquare, Building2, DraftingCompass } from 'lucide-react';
 import ContactAgentDialog from '@/components/property/ContactAgentDialog';
-import { useState } from 'react';
 import { useAuth } from "@/hooks/useAuth.tsx";
 import LoginPrompt from '@/components/auth/LoginPrompt';
 
@@ -20,7 +19,8 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { isLoggedIn } = useAuth();
   
-  const property = properties.find((p) => p.id.toString() === params.id);
+  const id = use(Promise.resolve(params.id));
+  const property = properties.find((p) => p.id.toString() === id);
 
   if (!property) {
     notFound();
@@ -52,8 +52,8 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   };
 
   const propertyDetails = [
-    { icon: BedDouble, label: 'Bedrooms', value: property.bedrooms },
-    { icon: Bath, label: 'Bathrooms', value: property.bathrooms },
+    ...(property.bedrooms ? [{ icon: BedDouble, label: 'Bedrooms', value: property.bedrooms }] : []),
+    ...(property.bathrooms ? [{ icon: Bath, label: 'Bathrooms', value: property.bathrooms }] : []),
     { icon: Expand, label: 'Area', value: `${property.area} sqft` },
     { icon: Building, label: 'Type', value: property.type },
     { icon: Tag, label: 'Status', value: property.status },
@@ -79,7 +79,11 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                               data-ai-hint="house interior"
                             />
                              <AvatarFallback className="rounded-none bg-secondary flex-col gap-2">
-                                <Building2 className="w-12 h-12 text-muted-foreground/50" />
+                                {property.type === 'Plot' ? (
+                                    <DraftingCompass className="w-12 h-12 text-muted-foreground/50" />
+                                ) : (
+                                    <Building2 className="w-12 h-12 text-muted-foreground/50" />
+                                )}
                                 <span className="text-sm text-muted-foreground">No image available</span>
                             </AvatarFallback>
                           </Avatar>

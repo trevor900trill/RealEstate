@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { BedDouble, Bath, Expand, MapPin, Heart } from 'lucide-react';
+import { BedDouble, Bath, Expand, MapPin, Heart, DraftingCompass } from 'lucide-react';
 import type { Property } from '@/lib/types';
 import { useAuth } from "@/hooks/useAuth.tsx";
 import { useState } from 'react';
@@ -59,7 +59,11 @@ export default function PropertyCard({ property }: PropertyCardProps) {
               data-ai-hint={`${property.type.toLowerCase()} exterior`}
             />
             <AvatarFallback className="rounded-none bg-secondary flex-col gap-2">
-                <Building2 className="w-10 h-10 text-muted-foreground/50" />
+                {property.type === 'Plot' ? (
+                     <DraftingCompass className="w-10 h-10 text-muted-foreground/50" />
+                ) : (
+                    <Building2 className="w-10 h-10 text-muted-foreground/50" />
+                )}
                 <span className="text-xs text-muted-foreground">No image available</span>
             </AvatarFallback>
           </Avatar>
@@ -86,12 +90,16 @@ export default function PropertyCard({ property }: PropertyCardProps) {
       </CardContent>
       <CardFooter className="p-4 bg-secondary/30 flex justify-between items-center text-sm">
         <div className="flex items-center gap-3 text-muted-foreground">
-          <span className="flex items-center gap-1.5">
-            <BedDouble className="w-5 h-5 text-primary/80" /> {property.bedrooms}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <Bath className="w-5 h-5 text-primary/80" /> {property.bathrooms}
-          </span>
+          {property.type !== 'Plot' && property.bedrooms && (
+            <span className="flex items-center gap-1.5">
+              <BedDouble className="w-5 h-5 text-primary/80" /> {property.bedrooms}
+            </span>
+          )}
+          {property.type !== 'Plot' && property.bathrooms && (
+            <span className="flex items-center gap-1.5">
+              <Bath className="w-5 h-5 text-primary/80" /> {property.bathrooms}
+            </span>
+          )}
           <span className="flex items-center gap-1.5">
             <Expand className="w-5 h-5 text-primary/80" /> {property.area} sqft
           </span>

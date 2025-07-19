@@ -3,10 +3,10 @@ export interface Property {
   title: string;
   address: string;
   price: number;
-  bedrooms: number;
-  bathrooms: number;
+  bedrooms?: number;
+  bathrooms?: number;
   area: number;
-  type: 'House' | 'Apartment' | 'Condo';
+  type: 'House' | 'Apartment' | 'Condo' | 'Plot';
   status: 'For Sale' | 'For Rent';
   images: string[];
   description: string;
