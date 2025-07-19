@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Building2, UserCircle2 } from "lucide-react";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, Building2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
@@ -71,8 +71,11 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-6 p-6">
-                <Link href="/" className="flex items-center gap-2">
+              <SheetHeader>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              </SheetHeader>
+              <div className="flex flex-col gap-6 p-6 pt-0">
+                <Link href="/" className="flex items-center gap-2 mb-4">
                     <Building2 className="h-6 w-6 text-primary" />
                     <span className="font-bold text-lg font-headline">ResiConnect</span>
                 </Link>
@@ -81,7 +84,7 @@ export default function Header() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-muted-foreground hover:text-foreground"
+                      className="text-muted-foreground hover:text-foreground text-lg"
                     >
                       {link.label}
                     </Link>
