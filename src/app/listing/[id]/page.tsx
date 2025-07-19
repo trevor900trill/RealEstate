@@ -1,7 +1,7 @@
 
 'use client'
 
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { notFound } from 'next/navigation';
 import { properties } from '@/lib/dummy-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BedDouble, Bath, Expand, MapPin, Building, Tag, Phone, Text, Heart, MessageSquare, Building2, DraftingCompass } from 'lucide-react';
 import ContactAgentDialog from '@/components/property/ContactAgentDialog';
-import { useAuth } from "@/hooks/useAuth.tsx";
+import { useAuth } from "@/hooks/useAuth";
 import LoginPrompt from '@/components/auth/LoginPrompt';
 
 export default function ListingPage({ params }: { params: { id: string } }) {
