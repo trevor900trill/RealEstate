@@ -1,0 +1,27 @@
+import Image from 'next/image';
+
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
+      <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-md space-y-6">
+          {children}
+        </div>
+      </div>
+      <div className="hidden bg-muted lg:block relative">
+        <Image
+          src="https://placehold.co/1200x1000/e07a5f/f2e8e5"
+          alt="A beautiful modern house"
+          data-ai-hint="modern house exterior"
+          fill
+          className="h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute bottom-10 left-10 text-white">
+          <h2 className="text-4xl font-headline font-bold">Welcome to ResiConnect</h2>
+          <p className="text-lg mt-2 max-w-lg">Your journey to finding the perfect home starts here. Connect with sellers and discover unique properties.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
