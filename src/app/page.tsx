@@ -3,9 +3,10 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Mail, UserPlus, Search } from "lucide-react";
+import { ArrowRight, Mail, UserPlus, Search, HomeIcon } from "lucide-react";
 import ListingExplorer from "@/components/property/ListingExplorer";
 import { properties } from "@/lib/dummy-data";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 
 export default function Home() {
@@ -13,13 +14,17 @@ export default function Home() {
     <div className="flex flex-col items-center">
       <section className="w-full relative bg-secondary/40">
         <div className="absolute inset-0">
-           <Image
-              src="https://placehold.co/1920x1080/f2e8e5/e07a5f"
-              alt="Background hero image of a modern home"
-              fill
-              className="object-cover opacity-50"
-              data-ai-hint="modern home abstract background"
-            />
+           <Avatar className="h-full w-full rounded-none">
+                <AvatarImage
+                    src="https://placehold.co/1920x1080/f2e8e5/e07a5f"
+                    alt="Background hero image of a modern home"
+                    className="object-cover opacity-50"
+                    data-ai-hint="modern home abstract background"
+                />
+                <AvatarFallback className="rounded-none bg-secondary flex-col gap-2">
+                    <HomeIcon className="w-24 h-24 text-muted-foreground/20" />
+                </AvatarFallback>
+            </Avatar>
              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
         </div>
         <div className="container mx-auto px-4 md:px-6 text-center relative z-10 py-24 md:py-40">
@@ -64,14 +69,17 @@ export default function Home() {
                 </Button>
             </div>
             <div className="flex justify-center">
-              <Image 
-                src="https://placehold.co/600x400/81b29a/f2e8e5"
-                alt="A smiling real estate agent"
-                width={500}
-                height={350}
-                className="rounded-xl shadow-2xl"
-                data-ai-hint="real estate agent"
-              />
+               <Avatar className="rounded-xl shadow-2xl w-[500px] h-[350px]">
+                 <AvatarImage 
+                    src="https://placehold.co/600x400/81b29a/f2e8e5"
+                    alt="A smiling real estate agent"
+                    className="object-cover"
+                    data-ai-hint="real estate agent"
+                  />
+                  <AvatarFallback className="rounded-xl bg-secondary flex-col gap-2">
+                    <UserPlus className="w-16 h-16 text-muted-foreground/50" />
+                 </AvatarFallback>
+               </Avatar>
             </div>
           </div>
         </div>

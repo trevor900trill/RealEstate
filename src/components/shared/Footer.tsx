@@ -20,7 +20,7 @@ export default function Footer() {
             <Link href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/seller-dashboard#messages" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+            <Link href="/messages" className="text-sm text-muted-foreground hover:text-primary transition-colors">
               Contact Us
             </Link>
           </nav>

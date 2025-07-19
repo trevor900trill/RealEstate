@@ -6,10 +6,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { sellerMessages } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Mail, AlertTriangle } from "lucide-react";
+import { Mail, AlertTriangle, Send, Inbox } from "lucide-react";
 import LoginPrompt from "@/components/auth/LoginPrompt";
 import { useAuth } from "@/hooks/useAuth.tsx";
 import { useEffect, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import MessagesTable from "@/components/seller/MessagesTable";
 
 // For demo purposes, we'll pretend these are the buyer's messages
 const buyerMessages = sellerMessages.slice(0, 3).map(m => ({
@@ -18,8 +20,46 @@ const buyerMessages = sellerMessages.slice(0, 3).map(m => ({
     id: `B${m.id}`
 }));
 
+const BuyerInbox = () => (
+    <div className="space-y-4">
+        {buyerMessages.length > 0 ? buyerMessages.map((message) => (
+            <Link href="#" key={message.id}>
+                <div className={cn(
+                    "flex items-start gap-4 p-4 rounded-lg border hover:bg-secondary/50 transition-colors",
+                    message.status === 'Unread' && 'bg-primary/5'
+                )}>
+                    <Avatar className="w-12 h-12 border-2 border-primary/40">
+                        <AvatarImage src={`https://placehold.co/100x100/3d405b/f2e8e5`} alt={message.name} data-ai-hint="professional portrait" />
+                        <AvatarFallback>{message.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className={cn("font-semibold", message.status === 'Unread' && 'text-primary')}>{message.name}</p>
+                                <p className="text-sm font-bold">{message.property}</p>
+                            </div>
+                            <p className="text-xs text-muted-foreground">{message.date}</p>
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                            {message.body}
+                        </p>
+                    </div>
+                </div>
+            </Link>
+        )) : (
+            <div className="text-center py-16 border-2 border-dashed rounded-xl bg-background">
+                <h2 className="text-2xl font-semibold">No Messages Yet</h2>
+                <p className="text-muted-foreground mt-2">
+                    When you contact a seller, your conversation will appear here.
+                </p>
+                </div>
+        )}
+    </div>
+);
+
+
 export default function MessagesPage() {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, isSeller } = useAuth();
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
     useEffect(() => {
@@ -53,45 +93,33 @@ export default function MessagesPage() {
                             <Mail className="w-8 h-8 text-primary" />
                             Your Inbox
                         </CardTitle>
-                        <CardDescription>
-                            Conversations with sellers about properties you're interested in.
+                         <CardDescription>
+                            {isSeller ? "Manage messages from potential buyers and your own inquiries." : "Conversations with sellers about properties you're interested in."}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
-                            {buyerMessages.length > 0 ? buyerMessages.map((message) => (
-                                <Link href="#" key={message.id}>
-                                    <div className={cn(
-                                        "flex items-start gap-4 p-4 rounded-lg border hover:bg-secondary/50 transition-colors",
-                                        message.status === 'Unread' && 'bg-primary/5'
-                                    )}>
-                                        <Avatar className="w-12 h-12 border-2 border-primary/40">
-                                            <AvatarImage src={`https://placehold.co/100x100/3d405b/f2e8e5`} alt={message.name} data-ai-hint="professional portrait" />
-                                            <AvatarFallback>{message.name.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex-1">
-                                            <div className="flex justify-between items-start">
-                                                <div>
-                                                    <p className={cn("font-semibold", message.status === 'Unread' && 'text-primary')}>{message.name}</p>
-                                                    <p className="text-sm font-bold">{message.property}</p>
-                                                </div>
-                                                <p className="text-xs text-muted-foreground">{message.date}</p>
-                                            </div>
-                                            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                                                {message.body}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            )) : (
-                                <div className="text-center py-16 border-2 border-dashed rounded-xl bg-background">
-                                    <h2 className="text-2xl font-semibold">No Messages Yet</h2>
-                                    <p className="text-muted-foreground mt-2">
-                                        When you contact a seller, your conversation will appear here.
-                                    </p>
-                                 </div>
-                            )}
-                        </div>
+                       {isSeller ? (
+                            <Tabs defaultValue="seller" className="w-full">
+                                <TabsList className="grid w-full grid-cols-2 md:w-[300px] mb-6">
+                                    <TabsTrigger value="seller">
+                                        <Inbox className="mr-2 h-4 w-4"/>
+                                        Seller Inbox
+                                    </TabsTrigger>
+                                    <TabsTrigger value="buyer">
+                                        <Send className="mr-2 h-4 w-4"/>
+                                        Sent Inquiries
+                                    </TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="seller">
+                                    <MessagesTable messages={sellerMessages} />
+                                </TabsContent>
+                                <TabsContent value="buyer">
+                                    <BuyerInbox />
+                                </TabsContent>
+                            </Tabs>
+                       ) : (
+                           <BuyerInbox />
+                       )}
                     </CardContent>
                 </Card>
             </div>

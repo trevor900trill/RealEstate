@@ -82,7 +82,7 @@ export default function Header() {
                     <Link href="/seller-dashboard"><LayoutList className="mr-2 h-4 w-4" />Dashboard</Link>
                   </DropdownMenuItem>
                    <DropdownMenuItem asChild>
-                      <Link href="/seller-dashboard?tab=messages"><Mail className="mr-2 h-4 w-4" />Messages</Link>
+                      <Link href="/messages"><Mail className="mr-2 h-4 w-4" />Messages</Link>
                     </DropdownMenuItem>
                   </>
                 ) : (
@@ -167,7 +167,7 @@ export default function Header() {
                     <Building2 className="h-5 w-5" />
                     For Sellers
                   </Link>
-                  {isLoggedIn && !isSeller && (
+                  {isLoggedIn && (
                     <>
                     <Link href="/favorites" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
                       <Heart className="h-5 w-5" />

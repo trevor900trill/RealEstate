@@ -7,7 +7,6 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, Send, Building2 } from "lucide-react";
-import Image from "next/image";
 
 export default function MessageDetailPage({ params }: { params: { id: string } }) {
   const message = sellerMessages.find((m) => m.id === params.id);
@@ -23,7 +22,7 @@ export default function MessageDetailPage({ params }: { params: { id: string } }
       <div className="container mx-auto px-4 md:px-6 py-12">
         <div className="max-w-4xl mx-auto">
           <Button asChild variant="ghost" className="mb-4">
-            <Link href="/seller-dashboard?tab=messages">
+            <Link href="/messages">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Inbox
             </Link>
