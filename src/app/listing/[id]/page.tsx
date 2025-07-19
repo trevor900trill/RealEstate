@@ -1,3 +1,4 @@
+
 'use client'
 
 import { use, useState } from 'react';
@@ -19,7 +20,7 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { isLoggedIn } = useAuth();
   
-  const id = use(Promise.resolve(params.id));
+  const id = params.id;
   const property = properties.find((p) => p.id.toString() === id);
 
   if (!property) {
