@@ -5,27 +5,28 @@ import { Button } from "@/components/ui/button";
 import type { Message } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-interface MessagesTableProps {
+interface BuyerMessagesTableProps {
   messages: Message[];
 }
 
-export default function MessagesTable({ messages }: MessagesTableProps) {
-    if (messages.length === 0) {
-        return (
-            <div className="text-center py-16 border-2 border-dashed rounded-xl bg-background">
-                <h2 className="text-2xl font-semibold">No Messages Found</h2>
-                <p className="text-muted-foreground mt-2">
-                    Your search did not return any messages.
-                </p>
-            </div>
-        );
-    }
+export default function BuyerMessagesTable({ messages }: BuyerMessagesTableProps) {
+  if (messages.length === 0) {
+     return (
+        <div className="text-center py-16 border-2 border-dashed rounded-xl bg-background">
+            <h2 className="text-2xl font-semibold">No Messages Found</h2>
+            <p className="text-muted-foreground mt-2">
+                Your search did not return any messages.
+            </p>
+        </div>
+    );
+  }
+  
   return (
     <div className="border rounded-md">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>From</TableHead>
+            <TableHead>Agent</TableHead>
             <TableHead>Property</TableHead>
             <TableHead>Date</TableHead>
             <TableHead>Status</TableHead>
@@ -45,7 +46,7 @@ export default function MessagesTable({ messages }: MessagesTableProps) {
               </TableCell>
               <TableCell className="text-right">
                 <Button asChild variant="outline" size="sm">
-                  <Link href={`/seller-dashboard/messages/${message.id}`}>View</Link>
+                  <Link href={`/messages/${message.id}`}>View</Link>
                 </Button>
               </TableCell>
             </TableRow>

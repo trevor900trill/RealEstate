@@ -59,7 +59,7 @@ export default function Home() {
       <section className="w-full bg-secondary/40 py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="text-center md:text-left">
+            <div className="order-2 md:order-1 text-center md:text-left">
               <h2 className="text-3xl md:text-4xl font-headline font-bold mb-4">Ready to Sell Your Property?</h2>
               <p className="text-muted-foreground text-lg mb-8">Join Placeholder to list your property and connect with thousands of potential buyers across Kenya.</p>
               <Button asChild size="lg" className="font-bold">
@@ -68,8 +68,8 @@ export default function Home() {
                   </Link>
                 </Button>
             </div>
-            <div className="flex justify-center">
-               <Avatar className="rounded-xl shadow-2xl w-[500px] h-[350px]">
+            <div className="order-1 md:order-2 flex justify-center">
+               <Avatar className="rounded-xl shadow-2xl w-full max-w-[500px] h-auto aspect-[5/3.5]">
                  <AvatarImage 
                     src="https://placehold.co/600x400/e07a5f/f2e8e5"
                     alt="A smiling real estate agent"

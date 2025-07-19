@@ -3,15 +3,15 @@
 
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { sellerMessages, properties } from "@/lib/dummy-data";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Mail, AlertTriangle } from "lucide-react";
+import { Mail, AlertTriangle, Search } from "lucide-react";
 import LoginPrompt from "@/components/auth/LoginPrompt";
 import { useAuth } from "@/hooks/useAuth.tsx";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import MessagesTable from "@/components/seller/MessagesTable";
+import BuyerMessagesTable from "@/components/buyer/BuyerMessagesTable";
+import { Input } from "@/components/ui/input";
 
 // For demo purposes, we'll pretend these are the buyer's messages
 // In a real app, this data would come from a database based on the user's ID
@@ -25,53 +25,31 @@ const buyerMessages = sellerMessages.slice(3, 5).map(m => {
     }
 });
 
-const BuyerInbox = () => (
-    <div className="space-y-4">
-        {buyerMessages.length > 0 ? buyerMessages.map((message) => (
-            <Link href={`/messages/${message.id}`} key={message.id}>
-                <div className={cn(
-                    "flex items-start gap-4 p-4 rounded-lg border hover:bg-secondary/50 transition-colors",
-                    message.status === 'Unread' && 'bg-primary/5'
-                )}>
-                    <Avatar className="w-12 h-12 border-2 border-primary/40">
-                        <AvatarImage src={message.avatar} alt={message.name} data-ai-hint="professional portrait" />
-                        <AvatarFallback>{message.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                        <div className="flex justify-between items-start">
-                            <div>
-                                <p className={cn("font-semibold", message.status === 'Unread' && 'text-primary')}>{message.name}</p>
-                                <p className="text-sm font-bold text-muted-foreground">Inquiry about: {message.property}</p>
-                            </div>
-                            <p className="text-xs text-muted-foreground">{message.date}</p>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-                            {message.body}
-                        </p>
-                    </div>
-                </div>
-            </Link>
-        )) : (
-            <div className="text-center py-16 border-2 border-dashed rounded-xl bg-background">
-                <h2 className="text-2xl font-semibold">No Messages Yet</h2>
-                <p className="text-muted-foreground mt-2">
-                    When you contact a seller, your conversation will appear here.
-                </p>
-            </div>
-        )}
-    </div>
-);
-
 
 export default function MessagesPage() {
     const { isLoggedIn, isSeller } = useAuth();
     const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         if (!isLoggedIn) {
             setShowLoginPrompt(true);
         }
     }, [isLoggedIn]);
+
+    const filteredSellerMessages = useMemo(() => {
+        return sellerMessages.filter(m => 
+            m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.property.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery]);
+
+    const filteredBuyerMessages = useMemo(() => {
+        return buyerMessages.filter(m =>
+            m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.property.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [searchQuery]);
 
     if (!isLoggedIn) {
         return (
@@ -96,17 +74,28 @@ export default function MessagesPage() {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 text-3xl font-headline">
                             <Mail className="w-8 h-8 text-primary" />
-                            {isSeller ? "Seller Inbox" : "Your Inbox"}
+                            {isSeller ? "Your Inboxes" : "Your Inbox"}
                         </CardTitle>
                          <CardDescription>
                             {isSeller ? "Manage messages from potential buyers about your listings." : "Conversations with agents about properties you're interested in."}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
+                        <div className="mb-6">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                <Input 
+                                    placeholder="Search messages..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="pl-10"
+                                />
+                            </div>
+                        </div>
                        {isSeller ? (
-                           <MessagesTable messages={sellerMessages} />
+                           <MessagesTable messages={filteredSellerMessages} />
                        ) : (
-                           <BuyerInbox />
+                           <BuyerMessagesTable messages={filteredBuyerMessages} />
                        )}
                     </CardContent>
                 </Card>

@@ -73,9 +73,11 @@ export default function SellerDashboardPage() {
             <h1 className="text-4xl font-headline font-bold">Seller Dashboard</h1>
             <p className="text-muted-foreground mt-1">Welcome back! Here's what's happening with your listings.</p>
           </div>
-          <Button size="lg" className="mt-4 md:mt-0">
-            <PlusCircle className="mr-2 h-5 w-5" />
-            Add New Property
+          <Button size="lg" className="mt-4 md:mt-0" asChild>
+            <Link href="/seller-dashboard/add-property">
+                <PlusCircle className="mr-2 h-5 w-5" />
+                Add New Property
+            </Link>
           </Button>
         </header>
 
