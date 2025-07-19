@@ -7,8 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone } from 'lucide-react';
-import PropertySummary from '@/components/property/PropertySummary';
+import { BedDouble, Bath, Expand, MapPin, Building, Tag, Mail, Phone, Text } from 'lucide-react';
 
 export default function ListingPage({ params }: { params: { id: string } }) {
   const property = properties.find((p) => p.id.toString() === params.id);
@@ -73,10 +72,13 @@ export default function ListingPage({ params }: { params: { id: string } }) {
               <CardContent>
                 <Separator className="my-6" />
                 
-                <PropertySummary 
-                  propertyDescription={property.description} 
-                  propertyFeatures={property.features.join(', ')} 
-                />
+                <div>
+                  <h3 className="text-2xl font-headline font-semibold mb-4 flex items-center gap-2">
+                    <Text className="w-6 h-6 text-primary" />
+                    Description
+                  </h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">{property.description}</p>
+                </div>
 
                 <Separator className="my-6" />
 
