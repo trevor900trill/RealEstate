@@ -41,12 +41,9 @@ export default function Header() {
         </Link>
         <nav className="hidden md:flex items-center gap-8 text-base font-medium">
           {navLinks.map((link) => {
-            // Specific check for homepage vs hash links on homepage
             const isActive = link.href === '/' 
-              ? pathname === '/' 
-              : link.href.startsWith('/#') 
-                ? pathname === '/' // Highlight listings on homepage
-                : pathname.startsWith(link.href) && link.href !== '/';
+              ? pathname === '/'
+              : (link.href.startsWith('/#') ? false : pathname.startsWith(link.href));
 
             return (
               <Link
