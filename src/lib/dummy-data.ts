@@ -22,12 +22,13 @@ export const properties: Property[] = [
     agent: {
       name: 'John Doe',
       avatar: 'https://placehold.co/100x100'
-    }
+    },
+    location: { lat: 34.0356, lng: -118.692 }
   },
   {
     id: 2,
     title: 'Cozy Downtown Apartment',
-    address: '456 Main Street, Suite 700, Anytown, USA',
+    address: '456 Main Street, Anytown, USA',
     price: 750000,
     bedrooms: 2,
     bathrooms: 2,
@@ -44,7 +45,8 @@ export const properties: Property[] = [
     agent: {
       name: 'Jane Smith',
       avatar: 'https://placehold.co/100x100'
-    }
+    },
+    location: { lat: 34.0522, lng: -118.2437 }
   },
   {
     id: 3,
@@ -66,7 +68,8 @@ export const properties: Property[] = [
     agent: {
       name: 'Emily White',
       avatar: 'https://placehold.co/100x100'
-    }
+    },
+    location: { lat: 39.352, lng: -83.3831 }
   },
   {
     id: 4,
@@ -88,7 +91,8 @@ export const properties: Property[] = [
     agent: {
       name: 'Michael Chen',
       avatar: 'https://placehold.co/100x100'
-    }
+    },
+    location: { lat: 37.129, lng: -88.733 }
   },
 ];
 

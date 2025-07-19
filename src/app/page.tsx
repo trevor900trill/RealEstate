@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Search, Mail, UserPlus } from "lucide-react";
-import PropertyCard from "@/components/property/PropertyCard";
+import { Input } from "@/components/ui/input";
+import { Mail, UserPlus } from "lucide-react";
+import ListingExplorer from "@/components/property/ListingExplorer";
 import { properties } from "@/lib/dummy-data";
+
 
 export default function Home() {
   return (
@@ -17,34 +18,12 @@ export default function Home() {
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground mb-8">
             ResiConnect makes finding the perfect property simple and elegant. Explore listings with ease.
           </p>
-          <div className="max-w-xl mx-auto">
-            <div className="relative">
-              <Input
-                type="search"
-                placeholder="Enter a city, neighborhood, or address..."
-                className="w-full h-14 pl-5 pr-12 rounded-full text-lg"
-              />
-              <Button
-                type="submit"
-                size="icon"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-primary hover:bg-primary/90"
-              >
-                <Search className="h-5 w-5 text-primary-foreground" />
-                <span className="sr-only">Search</span>
-              </Button>
-            </div>
-          </div>
         </div>
       </section>
 
       <section className="w-full py-16 md:py-24" id="listings">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold mb-8 text-center">Featured Listings</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {properties.map((property) => (
-              <PropertyCard key={property.id} property={property} />
-            ))}
-          </div>
+            <ListingExplorer properties={properties} />
         </div>
       </section>
 

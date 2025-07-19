@@ -15,6 +15,10 @@ export interface Property {
     name: string;
     avatar: string;
   };
+  location: {
+    lat: number;
+    lng: number;
+  }
 }
 
 export interface Analytics {

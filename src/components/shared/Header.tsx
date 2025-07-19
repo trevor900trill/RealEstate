@@ -3,14 +3,15 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Home, Menu, Building2 } from "lucide-react";
+import { Menu, Building2, UserCircle2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/#listings", label: "Listings" },
-  { href: "/seller-dashboard", label: "Dashboard" },
+  { href: "/seller-dashboard", label: "For Sellers" },
 ];
 
 export default function Header() {
@@ -30,7 +31,9 @@ export default function Header() {
               href={link.href}
               className={cn(
                 "transition-colors hover:text-primary",
-                pathname === link.href ? "text-primary" : "text-muted-foreground"
+                (pathname === link.href || (link.href.includes("#") && pathname === '/'))
+                  ? "text-primary font-semibold" 
+                  : "text-muted-foreground"
               )}
             >
               {link.label}
@@ -41,9 +44,23 @@ export default function Header() {
           <Button variant="ghost" asChild>
             <Link href="/login">Sign In</Link>
           </Button>
-          <Button asChild>
-            <Link href="/register">Register</Link>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                Register
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>I am a...</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/register">Buyer</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/seller-register">Seller</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <div className="md:hidden">
           <Sheet>
@@ -70,9 +87,9 @@ export default function Header() {
                     </Link>
                   ))}
                 </nav>
-                <div className="flex flex-col gap-2">
-                    <Button variant="outline" asChild><Link href="/login">Sign In</Link></Button>
-                    <Button asChild><Link href="/register">Register</Link></Button>
+                <div className="border-t pt-6 mt-auto">
+                    <Button variant="outline" className="w-full mb-2" asChild><Link href="/login">Sign In</Link></Button>
+                    <Button className="w-full" asChild><Link href="/register">Register</Link></Button>
                 </div>
               </div>
             </SheetContent>
