@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BedDouble, Bath, Expand, MapPin, Building, Tag, Phone, Text, Heart, MessageSquare } from 'lucide-react';
+import { BedDouble, Bath, Expand, MapPin, Building, Tag, Phone, Text, Heart, MessageSquare, Building2 } from 'lucide-react';
 import ContactAgentDialog from '@/components/property/ContactAgentDialog';
 import { useState } from 'react';
 import { useAuth } from "@/hooks/useAuth.tsx";
@@ -71,9 +71,18 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                   <CarouselContent>
                     {property.images.map((src, index) => (
                       <CarouselItem key={index}>
-                        <div className="aspect-video relative">
-                          <Image src={src} alt={`${property.title} image ${index + 1}`} fill className="object-cover" data-ai-hint="house interior" />
-                        </div>
+                          <Avatar className="aspect-video relative w-full h-auto rounded-none">
+                            <AvatarImage
+                              src={src}
+                              alt={`${property.title} image ${index + 1}`}
+                              className="object-cover"
+                              data-ai-hint="house interior"
+                            />
+                             <AvatarFallback className="rounded-none bg-secondary flex-col gap-2">
+                                <Building2 className="w-12 h-12 text-muted-foreground/50" />
+                                <span className="text-sm text-muted-foreground">No image available</span>
+                            </AvatarFallback>
+                          </Avatar>
                       </CarouselItem>
                     ))}
                   </CarouselContent>

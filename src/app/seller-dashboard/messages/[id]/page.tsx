@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Send, Building2 } from "lucide-react";
 import Image from "next/image";
 
 export default function MessageDetailPage({ params }: { params: { id: string } }) {
@@ -47,14 +47,17 @@ export default function MessageDetailPage({ params }: { params: { id: string } }
                   <h3 className="text-lg font-semibold mb-2">Inquiry about: {property.title}</h3>
                   <Link href={`/listing/${property.id}`}>
                     <div className="flex items-center gap-4 p-3 border rounded-lg hover:bg-secondary/50 transition-colors">
-                      <Image 
-                        src={property.images[0]} 
-                        alt={property.title} 
-                        width={100} 
-                        height={75} 
-                        className="rounded-md object-cover"
-                        data-ai-hint={`${property.type.toLowerCase()} exterior`}
-                      />
+                      <Avatar className="h-[75px] w-[100px] rounded-md">
+                         <AvatarImage 
+                          src={property.images[0]} 
+                          alt={property.title} 
+                          className="object-cover"
+                          data-ai-hint={`${property.type.toLowerCase()} exterior`}
+                        />
+                         <AvatarFallback className="rounded-md bg-secondary flex-col gap-1">
+                            <Building2 className="w-6 h-6 text-muted-foreground/50" />
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
                         <p className="font-semibold">{property.title}</p>
                         <p className="text-sm text-muted-foreground">{property.address}</p>

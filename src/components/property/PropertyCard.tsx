@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -11,6 +12,8 @@ import { useAuth } from "@/hooks/useAuth.tsx";
 import { useState } from 'react';
 import LoginPrompt from '../auth/LoginPrompt';
 import { useToast } from '@/hooks/use-toast';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Building2 } from 'lucide-react';
 
 interface PropertyCardProps {
   property: Property;
@@ -48,15 +51,18 @@ export default function PropertyCard({ property }: PropertyCardProps) {
     <Card className="flex flex-col overflow-hidden h-full transition-all duration-300 hover:shadow-xl hover:-translate-y-1 rounded-xl shadow-md">
       <CardHeader className="p-0 relative">
         <Link href={`/listing/${property.id}`}>
-          <div className="aspect-[4/3] relative">
-            <Image
+          <Avatar className="aspect-[4/3] relative w-full h-auto rounded-none">
+            <AvatarImage
               src={property.images[0]}
               alt={property.title}
-              fill
               className="object-cover"
               data-ai-hint={`${property.type.toLowerCase()} exterior`}
             />
-          </div>
+            <AvatarFallback className="rounded-none bg-secondary flex-col gap-2">
+                <Building2 className="w-10 h-10 text-muted-foreground/50" />
+                <span className="text-xs text-muted-foreground">No image available</span>
+            </AvatarFallback>
+          </Avatar>
         </Link>
         <Badge variant="secondary" className="absolute top-3 right-3 text-sm rounded-md">
           {property.status}
