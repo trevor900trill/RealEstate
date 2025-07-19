@@ -1,15 +1,28 @@
-import Link from "next/link";
-import Image from "next/image";
+
+'use client';
+
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Mail, UserPlus, Search, HomeIcon } from "lucide-react";
+import { ArrowRight, UserPlus, Search, HomeIcon } from "lucide-react";
 import ListingExplorer from "@/components/property/ListingExplorer";
 import { properties } from "@/lib/dummy-data";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import Link from "next/link";
 
 export default function Home() {
+  const [heroSearchQuery, setHeroSearchQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittedQuery(heroSearchQuery);
+    const listingsSection = document.getElementById('listings');
+    if (listingsSection) {
+      listingsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="flex flex-col items-center">
       <section className="w-full relative bg-secondary/40">
@@ -35,24 +48,26 @@ export default function Home() {
             The best place to find your dream property in Kenya.
             Start your search for apartments, houses, and condos today.
           </p>
-          <div className="max-w-xl mx-auto">
+          <form onSubmit={handleSearch} className="max-w-xl mx-auto">
             <div className="relative">
               <Input
                 placeholder="Search by location, e.g., 'Nairobi'"
                 className="h-14 pl-12 pr-32 rounded-full text-lg"
+                value={heroSearchQuery}
+                onChange={(e) => setHeroSearchQuery(e.target.value)}
               />
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
-              <Button size="lg" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-11">
+              <Button type="submit" size="lg" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-11">
                 Search
               </Button>
             </div>
-          </div>
+          </form>
         </div>
       </section>
 
       <section className="w-full py-16 md:py-24" id="listings">
         <div className="container mx-auto px-4 md:px-6">
-            <ListingExplorer properties={properties} />
+            <ListingExplorer properties={properties} initialSearchQuery={submittedQuery} />
         </div>
       </section>
 

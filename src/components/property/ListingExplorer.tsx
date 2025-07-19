@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
@@ -65,13 +66,17 @@ const MapView = ({ properties, onMarkerClick }: { properties: Property[], onMark
   );
 };
 
-export default function ListingExplorer({ properties }: { properties: Property[] }) {
-  const [searchQuery, setSearchQuery] = useState('');
+export default function ListingExplorer({ properties, initialSearchQuery = "" }: { properties: Property[], initialSearchQuery?: string }) {
+  const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [propertyType, setPropertyType] = useState('all');
   const [bedrooms, setBedrooms] = useState(0);
   const [priceRange, setPriceRange] = useState([0, 500000000]);
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
+
+  useEffect(() => {
+    setSearchQuery(initialSearchQuery);
+  }, [initialSearchQuery]);
 
   const filteredProperties = useMemo(() => {
     return properties.filter(property => {

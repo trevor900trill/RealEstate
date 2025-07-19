@@ -15,8 +15,8 @@ import { useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 
 const navLinks = [
-  { href: "/", label: "For Buyers" },
-  { href: "/seller-dashboard", label: "For Sellers" },
+  { href: "/", label: "For Buyers", icon: Home },
+  { href: "/seller-dashboard", label: "For Sellers", icon: LayoutList },
 ];
 
 export default function Header() {
@@ -43,15 +43,17 @@ export default function Header() {
     <>
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <Building2 className="h-8 w-8 text-primary" />
-          <span className="text-2xl font-bold font-headline tracking-tight">Placeholder</span>
-        </Link>
-        <nav className="hidden md:flex items-center gap-8 text-base font-medium">
+        <div className="flex items-center justify-start md:flex-1">
+            <Link href="/" className="flex items-center gap-2">
+            <Building2 className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold font-headline tracking-tight">Placeholder</span>
+            </Link>
+        </div>
+        <nav className="hidden md:flex items-center justify-center gap-8 text-base font-medium">
           {navLinks.map((link) => {
             const isActive = link.href === '/' 
               ? pathname === '/'
-              : (link.href.startsWith('/#') ? false : pathname.startsWith(link.href));
+              : pathname.startsWith(link.href);
 
             return (
               <Link
@@ -59,18 +61,19 @@ export default function Header() {
                 href={link.href}
                 onClick={link.label === "For Sellers" ? handleSellerNav : undefined}
                 className={cn(
-                  "transition-colors hover:text-primary pb-1",
+                  "transition-colors hover:text-primary pb-1 flex items-center gap-2",
                   isActive
                     ? "text-primary font-semibold border-b-2 border-primary"
                     : "text-muted-foreground"
                 )}
               >
+                 <link.icon className="h-4 w-4" />
                 {link.label}
               </Link>
             )
           })}
         </nav>
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center justify-end gap-2 md:flex-1">
           {isLoggedIn ? (
              <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -112,7 +115,6 @@ export default function Header() {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button>
-                    <UserPlus />
                     Register
                   </Button>
                 </DropdownMenuTrigger>
@@ -154,7 +156,7 @@ export default function Header() {
                         For Buyers
                     </Link>
                     <Link onClick={handleSellerNav} href="/seller-dashboard" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
-                        <Building2 className="h-5 w-5" />
+                        <LayoutList className="h-5 w-5" />
                         For Sellers
                     </Link>
                     {isLoggedIn && (
