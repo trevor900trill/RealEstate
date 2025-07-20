@@ -87,7 +87,7 @@ export default function AddPropertyPage() {
                     <Card className="shadow-lg">
                         <CardHeader>
                             <CardTitle className="text-3xl font-headline">Add New Property</CardTitle>
-                            <CardDescription>Fill in the details below to list your property on Placeholder.</CardDescription>
+                            <CardDescription>Fill in the details below to list your property on {'{Placeholder}'}.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Form {...form}>

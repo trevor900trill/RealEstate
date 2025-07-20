@@ -46,7 +46,7 @@ export default function Header() {
         <div className="flex items-center justify-start md:flex-1">
             <Link href="/" className="flex items-center gap-2">
             <Building2 className="h-8 w-8 text-primary" />
-            <span className="text-2xl font-bold font-headline tracking-tight">Placeholder</span>
+            <span className="text-2xl font-bold font-headline tracking-tight">{'{Placeholder}'}</span>
             </Link>
         </div>
         <nav className="hidden md:flex items-center justify-center gap-8 text-base font-medium">
@@ -142,7 +142,7 @@ export default function Header() {
               <SheetHeader>
                  <Link href="/" onClick={handleLinkClick} className="flex items-center gap-2 mb-4">
                     <Building2 className="h-6 w-6 text-primary" />
-                    <span className="font-bold text-lg font-headline">Placeholder</span>
+                    <span className="font-bold text-lg font-headline">{'{Placeholder}'}</span>
                 </Link>
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               </SheetHeader>

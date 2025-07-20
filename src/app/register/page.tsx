@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +15,7 @@ export default function RegisterPage() {
           <div className="flex justify-center mb-4">
               <Link href="/" className="flex items-center gap-2 text-foreground">
                   <Building2 className="h-8 w-8 text-primary" />
-                  <span className="text-2xl font-bold font-headline tracking-tight">Placeholder</span>
+                  <span className="text-2xl font-bold font-headline tracking-tight">{'{Placeholder}'}</span>
               </Link>
             </div>
           <CardTitle className="text-3xl font-headline">Create an account</CardTitle>
