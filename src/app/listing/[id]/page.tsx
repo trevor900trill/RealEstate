@@ -2,7 +2,7 @@
 'use client'
 
 import { useState } from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { properties } from '@/lib/dummy-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,12 +15,13 @@ import ContactAgentDialog from '@/components/property/ContactAgentDialog';
 import { useAuth } from "@/hooks/useAuth";
 import LoginPrompt from '@/components/auth/LoginPrompt';
 
-export default function ListingPage({ params }: { params: { id: string } }) {
+export default function ListingPage() {
   const [isContactOpen, setContactOpen] = useState(false);
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const { isLoggedIn } = useAuth();
   
-  const id = params.id;
+  const params = useParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const property = properties.find((p) => p.id.toString() === id);
 
   if (!property) {
