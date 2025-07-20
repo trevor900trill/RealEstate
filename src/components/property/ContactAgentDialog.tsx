@@ -18,9 +18,16 @@ interface ContactAgentDialogProps {
 
 export default function ContactAgentDialog({ isOpen, onOpenChange, property, agent }: ContactAgentDialogProps) {
   const [includeListing, setIncludeListing] = useState(true);
+  const [message, setMessage] = useState('');
 
   const defaultMessage = `Hello ${agent.name.split(' ')[0]},\n\nI'm interested in the property "${property.title}" located at ${property.address}.\n\nCould you please provide more information?\n\nThanks,`;
-  const messageWithoutListing = `Hello ${agent.name.split(' ')[0]},\n\nI'm interested in one of your properties.\n\nCould you please provide more information?\n\nThanks,`;
+
+  const handleSubmit = () => {
+    const subject = `Inquiry about ${property.title}`;
+    const body = message || defaultMessage;
+    window.location.href = `mailto:agent@placeholder.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    onOpenChange(false);
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -31,29 +38,21 @@ export default function ContactAgentDialog({ isOpen, onOpenChange, property, age
             Contact {agent.name}
           </DialogTitle>
           <DialogDescription>
-            Send a message directly to the listing agent. They will receive it in their seller dashboard.
+            This will open your default email client to send a message to the agent.
           </DialogDescription>
         </DialogHeader>
         <div className="py-4 space-y-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="include-listing"
-              checked={includeListing}
-              onCheckedChange={setIncludeListing}
-            />
-            <Label htmlFor="include-listing" className="cursor-pointer">Attach current listing to message</Label>
-          </div>
           <Textarea
             placeholder="Type your message here."
             rows={8}
-            defaultValue={includeListing ? defaultMessage : messageWithoutListing}
-            key={includeListing ? 'with-listing' : 'without-listing'}
+            defaultValue={defaultMessage}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </div>
         <DialogFooter>
-          <Button type="submit" size="lg" onClick={() => onOpenChange(false)}>
+          <Button type="submit" size="lg" onClick={handleSubmit}>
             <Send className="mr-2 h-5 w-5" />
-            Send Message
+            Send via Email
           </Button>
         </DialogFooter>
       </DialogContent>

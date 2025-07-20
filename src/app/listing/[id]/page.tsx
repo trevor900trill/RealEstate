@@ -29,9 +29,19 @@ export default function ListingPage({ params }: { params: { id: string } }) {
   
   const handleContactClick = () => {
     if (isLoggedIn) {
-      setContactOpen(true);
+      const subject = `Inquiry about ${property.title}`;
+      const body = `Hello ${property.agent.name.split(' ')[0]},\n\nI'm interested in the property "${property.title}" located at ${property.address}.\n\nCould you please provide more information?\n\nThanks,`;
+      window.location.href = `mailto:agent@placeholder.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     } else {
       setShowLoginPrompt(true);
+    }
+  };
+
+  const handleCallClick = () => {
+    if (!isLoggedIn) {
+      setShowLoginPrompt(true);
+    } else {
+       window.location.href = 'tel:+254123456789';
     }
   };
   
@@ -174,11 +184,10 @@ export default function ListingPage({ params }: { params: { id: string } }) {
                 <Button className="w-full text-lg h-12 mb-4" onClick={handleContactClick}>
                   <MessageSquare className="mr-2 h-5 w-5" /> Contact Agent
                 </Button>
-                <a href="tel:+254123456789">
-                  <Button variant="outline" className="w-full text-lg h-12">
-                    <Phone className="mr-2 h-5 w-5" /> Call Agent
+                 <Button variant="outline" className="w-full text-lg h-12" onClick={handleCallClick}>
+                    <Phone className="mr-2 h-5 w-5" /> 
+                    {isLoggedIn ? 'Call Agent' : 'Call +254 123 45* ****'}
                   </Button>
-                </a>
               </CardContent>
             </Card>
           </div>

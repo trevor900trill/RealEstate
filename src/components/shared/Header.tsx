@@ -51,9 +51,7 @@ export default function Header() {
         </div>
         <nav className="hidden md:flex items-center justify-center gap-8 text-base font-medium">
           {navLinks.map((link) => {
-            const isActive = link.href === '/' 
-              ? pathname === '/'
-              : pathname.startsWith(link.href);
+             const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
 
             return (
               <Link
@@ -97,9 +95,9 @@ export default function Header() {
                    <DropdownMenuItem asChild>
                     <Link href="/favorites"><Heart className="mr-2 h-4 w-4" />Favorites</Link>
                   </DropdownMenuItem>
-                   <DropdownMenuItem asChild>
+                   {/* <DropdownMenuItem asChild>
                       <Link href="/messages"><Mail className="mr-2 h-4 w-4" />Messages</Link>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout}>
                    <LogOut className="mr-2 h-4 w-4" />
@@ -165,10 +163,10 @@ export default function Header() {
                         <Heart className="h-5 w-5" />
                         Favorites
                         </Link>
-                        <Link onClick={handleLinkClick} href="/messages" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
+                        {/* <Link onClick={handleLinkClick} href="/messages" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">
                         <Mail className="h-5 w-5" />
                         Messages
-                        </Link>
+                        </Link> */}
                         </>
                     )}
                     </nav>

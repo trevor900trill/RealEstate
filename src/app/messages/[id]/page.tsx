@@ -31,6 +31,14 @@ export default function BuyerMessageDetailPage({ params }: { params: { id: strin
 
   const property = properties.find((p) => p.title === message.property);
 
+  const handleReply = () => {
+    if (property) {
+      const subject = `Re: Inquiry about ${property.title}`;
+      const body = `Hi ${property.agent.name.split(' ')[0]},\n\n`;
+      window.location.href = `mailto:agent@placeholder.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+  }
+
   return (
     <div className="bg-secondary/50 min-h-[calc(100vh-4rem)]">
       <div className="container mx-auto px-4 md:px-6 py-12">
@@ -88,7 +96,7 @@ export default function BuyerMessageDetailPage({ params }: { params: { id: strin
                 <h3 className="text-xl font-headline font-semibold mb-4">Your Reply</h3>
                 <div className="grid w-full gap-4">
                   <Textarea placeholder={`Hi ${message.name.split(' ')[0]},\n\n`} rows={6} />
-                  <Button size="lg" className="justify-self-end">
+                  <Button size="lg" className="justify-self-end" onClick={handleReply}>
                     <Send className="mr-2 h-5 w-5" />
                     Send Reply
                   </Button>
